@@ -31,6 +31,10 @@ $('#member-login-form').on('submit', function(event) {
         contentType: 'application/json; charset=utf-8',
         success: function(response) {
             alert(response.message);
+        },
+        error: function(jqXHR){
+            alert("Error: " + jqXHR.status);
+            console.log(jqXHR);
         }
     });
 });

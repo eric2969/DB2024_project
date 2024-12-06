@@ -16,20 +16,20 @@ if (file_exists($file_path) && is_readable($file_path)) {
         $db_pass = trim($lines[2]);
         $db_name = trim($lines[3]);
     } else {
-        echo json_encode(['success' => false, 'message' => "SQL帳密檔案內容格式不正確！"]);
-        die("SQL帳密檔案內容格式不正確！");
+        echo json_encode(['success' => false, 'message' => "SQL file format error"]);
+        die("SQL file format error");
     }
 } else {
-    echo json_encode(['success' => false, 'message' => "SQL帳密檔案內容格式不正確！"]);
-    die("SQL帳密檔案不存在或無法讀取！");
+    echo json_encode(['success' => false, 'message' => "SQL file does not exist"]);
+    die("SQL file does not exist");
 }
 
 $con = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 // 檢查連線是否成功
 if (!$con) {
     // 顯示錯誤資訊並終止程式
-    echo json_encode(['success' => false, 'message' => "資料庫連線失敗: " . mysqli_connect_error() . " (錯誤碼: " . mysqli_connect_errno() . ")"]);
-    die("資料庫連線失敗: " . mysqli_connect_error() . " (錯誤碼: " . mysqli_connect_errno() . ")");
+    echo json_encode(['success' => false, 'message' => "connection with DataBase failed: " . mysqli_connect_error() . " (err: " . mysqli_connect_errno() . ")"]);
+    die("connection with DataBase failed: " . mysqli_connect_error() . " (err: " . mysqli_connect_errno() . ")");
 }
 $con->query("SET NAMES 'utf8'");
 
@@ -50,9 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($
 
     if ($stmt->num_rows > 0 && password_verify($password, $hashed_password)) {
         $_SESSION['member'] = $username;
-        if ($remember) {
-            setcookie('member', $username, time() + (3000), "/"); // 5min
-        }
+        setcookie('member', $username, time() + (3000), "/"); // 5min
         echo json_encode(['success' => true, 'message' => '登入成功']);
     } else {
         echo json_encode(['success' => false, 'message' => '用戶名或密碼錯誤']);
