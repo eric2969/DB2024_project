@@ -5,7 +5,7 @@ session_start();
 
 if (!isset($_SESSION['admin'])) {
     echo json_encode(['success' => false, 'message' => '未授權的訪問']);
-    exit;
+    die("未授權的訪問");
 }
 
 $file_path = 'credentials.txt';
@@ -14,7 +14,6 @@ $file_path = 'credentials.txt';
 if (file_exists($file_path) && is_readable($file_path)) {
     // 讀取檔案內容
     $lines = file($file_path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-
     // 確認檔案至少有兩行
     if (count($lines) >= 4) {
         $db_host = trim($lines[0]);
@@ -22,26 +21,24 @@ if (file_exists($file_path) && is_readable($file_path)) {
         $db_pass = trim($lines[2]);
         $db_name = trim($lines[3]);
     } else {
+        echo json_encode(['success' => false, 'message' => "SQL帳密檔案內容格式不正確！"]);
         die("SQL帳密檔案內容格式不正確！");
     }
 } else {
+    echo json_encode(['success' => false, 'message' => "SQL帳密檔案內容格式不正確！"]);
     die("SQL帳密檔案不存在或無法讀取！");
 }
 
-
-
-$date = $_POST['date'];
-
 $con = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 // 檢查連線是否成功
-if (!$connection) {
+if (!$con) {
     // 顯示錯誤資訊並終止程式
+    echo json_encode(['success' => false, 'message' => "資料庫連線失敗: " . mysqli_connect_error() . " (錯誤碼: " . mysqli_connect_errno() . ")"]);
     die("資料庫連線失敗: " . mysqli_connect_error() . " (錯誤碼: " . mysqli_connect_errno() . ")");
 }
 
-
+$date = $_POST['date'];
 $con->query("SET NAMES 'utf8'");
-
 $query = "SELECT `indice`, `date`, `time`, `name`, `phone`, `people`, `other` FROM book where date = ? ORDER BY `time` ASC";
 $stmt = $con ->prepare($query);
 $stmt->bind_param("s", $date);
