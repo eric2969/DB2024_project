@@ -1,8 +1,11 @@
 //member register form
 function member_signup(){
-    var username = $('#sign_email').val();
+    var username = $('#sign_name').val();
+    var bdate = $('#sign_date').val();
+    var mail = $('#sign_email').val();
     var password = $('#sign_password').val();
-    if(username == "" || password == ""){
+    
+    if(username == "" || password == "" || bdate == "" || mail == ""){
         alert("Please fill in all fields.");
         return;
     }
@@ -50,3 +53,9 @@ function member_login() {
         }
     });
 }
+
+$(document).ready(function() {
+    var objDate = new Date();
+    console.log(objDate.toISOString().split('T')[0]);
+    $('#sign_date').attr('max', objDate.toISOString().split('T')[0]);
+});
