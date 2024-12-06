@@ -5,8 +5,6 @@ session_start();
 
 $file_path = 'credentials.txt';
 
-$file_path = 'credentials.txt';
-
 // 確認檔案存在且可讀取
 if (file_exists($file_path) && is_readable($file_path)) {
     // 讀取檔案內容
@@ -18,9 +16,11 @@ if (file_exists($file_path) && is_readable($file_path)) {
         $db_pass = trim($lines[2]);
         $db_name = trim($lines[3]);
     } else {
+        echo json_encode(['success' => false, 'message' => "SQL帳密檔案內容格式不正確！"]);
         die("SQL帳密檔案內容格式不正確！");
     }
 } else {
+    echo json_encode(['success' => false, 'message' => "SQL帳密檔案內容格式不正確！"]);
     die("SQL帳密檔案不存在或無法讀取！");
 }
 
@@ -28,6 +28,7 @@ $con = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 // 檢查連線是否成功
 if (!$con) {
     // 顯示錯誤資訊並終止程式
+    echo json_encode(['success' => false, 'message' => "資料庫連線失敗: " . mysqli_connect_error() . " (錯誤碼: " . mysqli_connect_errno() . ")"]);
     die("資料庫連線失敗: " . mysqli_connect_error() . " (錯誤碼: " . mysqli_connect_errno() . ")");
 }
 $con->query("SET NAMES 'utf8'");
