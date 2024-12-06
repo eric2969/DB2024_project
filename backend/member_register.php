@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($
     $username = $input['username'];
     $password = password_hash($input['password'], PASSWORD_BCRYPT);
 
-    $query = "INSERT INTO member (`username`, `password`) VALUES (?, ?)";
+    $query = "INSERT INTO member (`Mem_email`, `Mem_pass`) VALUES (?, ?)";
     $stmt = $con->prepare($query);
     $stmt->bind_param("ss", $username, $password);
 

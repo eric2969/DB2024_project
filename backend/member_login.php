@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($
     $password = $input['password'];
     $remember = isset($input['remember']) ? $input['remember'] : false;
 
-    $query = "SELECT `Mem_pass` FROM member WHERE `Mem_username` = ?";
+    $query = "SELECT `Mem_pass` FROM member WHERE `Mem_email` = ?";
     $stmt = $con->prepare($query);
     $stmt->bind_param("s", $username);
     $stmt->execute();
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($
 
     if ($stmt->num_rows > 0 && password_verify($password, $hashed_password)) {
         $_SESSION['member'] = $username;
-        setcookie('member', $username, time() + (3000), "/"); // 5min
+        setcookie('member', $username, time() + (300), "/"); // 5min
         echo json_encode(['success' => true, 'message' => '登入成功']);
     } else {
         echo json_encode(['success' => false, 'message' => '用戶名或密碼錯誤']);
