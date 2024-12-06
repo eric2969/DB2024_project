@@ -47,9 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($
 
     if ($stmt->num_rows > 0 && password_verify($password, $hashed_password)) {
         $_SESSION['member'] = $username;
-        if ($remember) {
-            setcookie('member', $username, time() + (3000), "/"); // 5min
-        }
+        setcookie('member', $username, time() + (3000), "/"); // 5min
         echo json_encode(['success' => true, 'message' => '登入成功']);
     } else {
         echo json_encode(['success' => false, 'message' => '用戶名或密碼錯誤']);
