@@ -8,10 +8,27 @@ if (!isset($_SESSION['admin'])) {
     exit;
 }
 
-$db_host = "localhost";
-$db_user = "iim";
-$db_pass = "fuckyou";
-$db_name = "iim";
+$file_path = 'credentials.txt';
+
+// 確認檔案存在且可讀取
+if (file_exists($file_path) && is_readable($file_path)) {
+    // 讀取檔案內容
+    $lines = file($file_path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+    // 確認檔案至少有兩行
+    if (count($lines) >= 4) {
+        $db_host = trim($lines[0]);
+        $db_user = trim($lines[1]);
+        $db_pass = trim($lines[2]);
+        $db_name = trim($lines[3]);
+    } else {
+        echo "檔案內容格式不正確！";
+    }
+} else {
+    echo "檔案不存在或無法讀取！";
+}
+
+
 
 $date = $_POST['date'];
 
