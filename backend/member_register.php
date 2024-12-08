@@ -23,7 +23,6 @@ if (file_exists($file_path) && is_readable($file_path)) {
     echo json_encode(['success' => false, 'message' => "SQL file does not exist"]);
     die("SQL file does not exist");
 }
-
 $con = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 // 檢查連線是否成功
 if (!$con) {

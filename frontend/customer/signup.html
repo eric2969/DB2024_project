@@ -42,13 +42,13 @@
                             <div class="bs-icon-xl bs-icon-circle bs-icon-primary shadow bs-icon my-4"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-person">
                                     <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z"></path>
                                 </svg></div>
-                            <form method="post" data-bs-theme="light" style="height: 300px;">
+                            <div data-bs-theme="light" style="height: 300px;">
                                 <div class="mb-3"><input class="form-control mb-3" type="text" id="sign_name" name="Name" placeholder="Name"></div>
                                 <div class="mb-3"><input class="form-control mb-3" id="sign_date" type="date" name="Birthday"></div>
                                 <div class="mb-3"><input class="form-control" type="email" id="sign_email" name="email" placeholder="Email"></div>
                                 <div class="mb-3"><input class="form-control mb-2" type="password" id="sign_password" name="password" placeholder="Password"></div>
-                                <div class="mb-3"><input class="btn shadow btn-primary w-100" type="submit" value="Sign Up" onclick="member_signup();"></div>
-                            </form>
+                                <div class="mb-3"><input class="btn shadow btn-primary w-100" onclick="member_signup();" type="submit" value="Sign Up"></div>
+                            </div>
                             <p class="text-muted">Already have an account?&nbsp;<a href="login.html">Log in</a></p>
                         </div>
                     </div>

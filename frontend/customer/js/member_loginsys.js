@@ -4,6 +4,7 @@ function member_signup(){
     var bdate = $('#sign_date').val();
     var mail = $('#sign_email').val();
     var password = $('#sign_password').val();
+    // alert(username) ;
     if(username == "" || password == "" || bdate == "" || mail == ""){
         alert("Please fill in all fields.");
         return;
@@ -15,13 +16,15 @@ function member_signup(){
         data: JSON.stringify({ username: username, password: password, mail: mail, bdate: bdate}),
         contentType: 'application/json; charset=utf-8',
         success: function(response) {
-            console.log(response);
+            // console.log(response);
+            alert(response.message);
             if (response.success) {
                 window.location.href = 'login.html';
             }
         },
         error: function(jqXHR){
-            console.log(jqXHR.responseText);
+            // console.log(jqXHR.responseText);
+            alert("Error: " + jqXHR.responseText);
         }
     });
 }
