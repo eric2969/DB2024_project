@@ -1,9 +1,10 @@
-function loadProducts() {
+$(document).ready(function() {
+    // 發送請求獲取商品資料
     $.ajax({
-        url: 'http://localhost/backend/merchandise.php',
+        url: 'http://localhost/backend/mem/merchandise.php',
         type: 'POST',
         dataType: 'json',
-        data:{},
+        data: JSON.stringify({single: false}),
         success: function(response) {
             if (response.success) {
                 // 處理回傳的商品資料
@@ -23,9 +24,9 @@ function loadProducts() {
                                     <p class="card-text">Price: $${product.Retail_price}</p>
                                     <p class="card-text text-muted">ID: ${product.MerID}</p>
                                 </div>
+                                <div class="ref-addons"><a href="product.html?MerID=${product.MerID}" class="btn btn-primary shadow">View Detail</a></div>
                             </div>
                         `;
-
                         // 插入商品卡片到容器
                         productContainer.appendChild(productCard);
                     });
@@ -38,9 +39,4 @@ function loadProducts() {
             console.log(jqXHR);
         }
     });
-}
-
-$(document).ready(function() {
-    // 發送請求獲取商品資料
-    loadProducts();
 });

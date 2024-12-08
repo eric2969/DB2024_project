@@ -3,7 +3,7 @@ header('Content-Type: application/json');
 
 session_start();
 
-$file_path = 'credentials.txt';
+$file_path = '../credentials.txt';
 
 // 確認檔案存在且可讀取
 if (file_exists($file_path) && is_readable($file_path)) {
@@ -35,22 +35,42 @@ $con->query("SET NAMES 'utf8'");
 $input = json_decode(file_get_contents('php://input'), true);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $query = "SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_pic` FROM Merchandise ";
-    $stmt = $con->prepare($query);
-    $stmt->execute();
-    // $stmt->store_result();
-    $result = $stmt->get_result();
+    if($input['single']){
+        $query = "SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_pic` FROM Merchandise WHERE `MerID` = ?";
+        $stmt = $con->prepare($query);
+        $stmt->bind_param("i", $input['merid']);
+        $stmt->execute();
+        // $stmt->store_result();
+        $result = $stmt->get_result();
 
-    if ($result->num_rows > 0) {
-        $goods = [];
-        while ($row = $result->fetch_assoc()) {
-            $goods[] = $row;
+        if ($result->num_rows > 0) {
+            $goods = [];
+            while ($row = $result->fetch_assoc()) {
+                $goods[] = $row;
+            }
+            echo json_encode(['success' => true, 'data' => $goods]);
+        } else {
+            echo json_encode(['success' => false, 'message' => '沒有找到任何商品資訊']);
         }
-        echo json_encode(['success' => true, 'data' => $goods]);
+        $stmt->close();
     } else {
-        echo json_encode(['success' => false, 'message' => '沒有找到任何商品資訊']);
+        $query = "SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_pic` FROM Merchandise ";
+        $stmt = $con->prepare($query);
+        $stmt->execute();
+        // $stmt->store_result();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $goods = [];
+            while ($row = $result->fetch_assoc()) {
+                $goods[] = $row;
+            }
+            echo json_encode(['success' => true, 'data' => $goods]);
+        } else {
+            echo json_encode(['success' => false, 'message' => '沒有找到任何商品資訊']);
+        }
+        $stmt->close();
     }
-    $stmt->close();
 } else {
     echo json_encode(['success' => false, 'message' => '無效的請求']);
 }
