@@ -14,10 +14,8 @@ function snd_comp(){
         contentType: 'application/json; charset=utf-8',
         success: function(response) {
             // console.log(response);
-            alert(response.message);
-            if (response.success) {
-                window.location.href = 'index.html';
-            }
+            alert("登出成功");
+            window.location.href = 'index.html';
         },
         error: function(jqXHR){
             // console.log(jqXHR.responseText);
