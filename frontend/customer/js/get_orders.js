@@ -187,12 +187,12 @@ $(document).ready(function() {
     //             if (!response.logged_in) {
     //                 window.location.href = 'admin_login.html';
     //             } else {
-    //                 loadBookings();
+    //                 
     //             }
     //         }
     //     });
     // }
-    
+    loadBookings();
 
     $('#edit-booking-form').on('submit', function(event) {
         event.preventDefault();
