@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.reflowhq.com/v2/toolkit.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/member_loginsys.js"></script> 
 </head>
 
 <body>
@@ -22,7 +24,7 @@
                     <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="products.html">Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="Complant.html">Complaint</a></li>
-                </ul><a href="shopping-cart.html" style="width: 40px;height: 40px;background: url(&quot;assets/img/clipboard-image.png&quot;) center / contain no-repeat;"></a><a class="btn btn-primary shadow" role="button" href="login.html" style="padding: 9.6px 9.6px;width: 100px;margin: 10px;">Sign in</a><a class="btn btn-primary" role="button" style="width: 100px;padding: 9.6px 9.6px;margin: 10px;" data-bs-target="index.html" href="signup.html">Register</a>
+                </ul><a href="shopping-cart.html" style="width: 40px;height: 40px;background: url(&quot;assets/img/clipboard-image.png&quot;) center / contain no-repeat;"></a><a class="btn btn-primary shadow login_btn" role="button" style="padding: 9.6px 9.6px;width: 100px;margin: 10px; display:none;" onclick="member_logout();">Log Out</a><a class="btn btn-primary shadow login_btn" role="button" href="order_detail.html" style="padding: 9.6px 9.6px;width: 100px;margin: 10px; display:none;">My Order</a><a class="btn btn-primary shadow logout_btn" role="button" href="login.html" style="padding: 9.6px 9.6px;width: 100px;margin: 10px;">Sign in</a><a class="btn btn-primary logout_btn" role="button" style="width: 100px;padding: 9.6px 9.6px;margin: 10px;" data-bs-target="index.html" href="signup.html">Sign Up</a>
             </div>
         </div>
     </nav>
