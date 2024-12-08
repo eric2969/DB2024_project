@@ -34,8 +34,8 @@ $con->query("SET NAMES 'utf8'");
 
 $input = json_decode(file_get_contents('php://input'), true);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($input['mail']) && isset($input['bdate']) && isset($input['password'] )) {
-    $query = "SELECT `MerID`, `Mer_name`, `Retail_price` FROM Merchandise ";
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $query = "SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_pic` FROM Merchandise ";
     $stmt = $con->prepare($query);
     $stmt->execute();
     // $stmt->store_result();
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($
         }
         echo json_encode(['success' => true, 'data' => $goods]);
     } else {
-        echo json_encode(['success' => false, 'message' => '沒有找到任何訂位資訊']);
+        echo json_encode(['success' => false, 'message' => '沒有找到任何商品資訊']);
     }
     $stmt->close();
 } else {
