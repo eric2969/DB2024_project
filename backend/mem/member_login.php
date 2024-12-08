@@ -40,13 +40,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($
     $password = $input['password'];
     $remember = isset($input['remember']) ? $input['remember'] : false;
 
-    $query = "SELECT `Mem_pass`, `MemID` FROM member WHERE `Mem_email` = ?";
+    $query = "SELECT `Mem_pass`, `MemID` FROM member WHERE Mem_email = ? ";
     $stmt = $con->prepare($query);
-    $MemID = ""
-    $stmt->bind_param("si", $username, $MemID);
+    $MemID = "";
+    $stmt->bind_param("s", $username);
     $stmt->execute();
     $stmt->store_result();
-    $stmt->bind_result($hashed_password);
+    $stmt->bind_result($hashed_password, $MemID);
     $stmt->fetch();
 
     if ($stmt->num_rows > 0 && password_verify($password, $hashed_password)) {
