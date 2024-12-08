@@ -3,35 +3,34 @@ function loadProducts() {
         url: 'http://localhost/backend/merchandise.php',
         type: 'POST',
         dataType: 'json',
-        data:{
-        },
+        data:{},
         success: function(response) {
             if (response.success) {
                 // 處理回傳的商品資料
-            const productContainer = document.querySelector(".row.mx-auto");
-            var data = response.data;
-            // 確保資料是陣列
-            if (Array.isArray(data)) {
-                data.forEach((product) => {
-                    // 建立商品卡片
-                    const productCard = document.createElement("div");
-                    productCard.className = "col-md-4 mb-4";
-                    productCard.innerHTML = `
-                        <div class="card h-100 shadow-sm">
-                            <img src="data:image/png;base64,${product.Mer_pic}" class="card-img-top" alt="${product.Mer_name}">
-                            <div class="card-body">
-                                <h5 class="card-title">${product.Mer_name}</h5>
-                                <p class="card-text">Price: $${product.Retail_price}</p>
-                                <p class="card-text text-muted">ID: ${product.MerID}</p>
+                const productContainer = document.querySelector(".row.mx-auto");
+                var data = response.data;
+                // 確保資料是陣列
+                if (Array.isArray(data)) {
+                    data.forEach((product) => {
+                        // 建立商品卡片
+                        const productCard = document.createElement("div");
+                        productCard.className = "col-md-4 mb-4";
+                        productCard.innerHTML = `
+                            <div class="card h-100 shadow-sm">
+                                <img src="data:image;base64,${product.Mer_pic}" class="card-img-top" alt="${product.Mer_name}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${product.Mer_name}</h5>
+                                    <p class="card-text">Price: $${product.Retail_price}</p>
+                                    <p class="card-text text-muted">ID: ${product.MerID}</p>
+                                </div>
                             </div>
-                        </div>
-                    `;
+                        `;
 
-                    // 插入商品卡片到容器
-                    productContainer.appendChild(productCard);
-                });
-            } else {
-                console.error("Unexpected response format:", response.message);
+                        // 插入商品卡片到容器
+                        productContainer.appendChild(productCard);
+                    });
+                } else 
+                    console.error("Unexpected response format:", response.message);
             }
         },
         error: function(jqXHR) {
@@ -41,7 +40,7 @@ function loadProducts() {
     });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+$(document).ready(function() {
     // 發送請求獲取商品資料
     loadProducts();
 });
