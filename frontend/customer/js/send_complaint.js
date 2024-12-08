@@ -7,16 +7,16 @@ function snd_comp(){
         return;
     }
     $.ajax({
-        url: 'http://localhost/backend/member_register.php',
+        url: 'http://localhost/backend/mem/member_complaint.php',
         type: 'POST',
         dataType: 'json',
-        data: JSON.stringify({ username: username, mail: mail, msg: msg}),
+        data: JSON.stringify({ name: username, mail: mail, msg: msg}),
         contentType: 'application/json; charset=utf-8',
         success: function(response) {
             // console.log(response);
             alert(response.message);
             if (response.success) {
-                window.location.href = 'login.html';
+                window.location.href = 'index.html';
             }
         },
         error: function(jqXHR){

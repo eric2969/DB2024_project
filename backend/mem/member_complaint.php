@@ -35,25 +35,16 @@ $con->query("SET NAMES 'utf8'");
 
 $input = json_decode(file_get_contents('php://input'), true);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($input['password'])) {
-    $username = $input['username'];
-    $password = $input['password'];
-    $remember = isset($input['remember']) ? $input['remember'] : false;
-
-    $query = "SELECT `Mem_pass` FROM member WHERE `Mem_email` = ?";
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['name']) && isset($input['mail']) && isset($input['msg'])) {
+    $query = "INSERT INTO complaint (`complainant`, `email`, `reason`, `create_time`) VALUES (?, ?, ?, ?)";
     $stmt = $con->prepare($query);
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $stmt->store_result();
-    $stmt->bind_result($hashed_password);
-    $stmt->fetch();
+    $dtime = date("Y-m-d H:i:s");
+    $stmt->bind_param("ssss", $input['name'], $input['mail'], $input['msg'], $dtime);
 
-    if ($stmt->num_rows > 0 && password_verify($password, $hashed_password)) {
-        $_SESSION['member'] = $username;
-        setcookie('member', $username, time() + (300), "/"); // 5min
-        echo json_encode(['success' => true, 'message' => '登入成功']);
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => '傳送成功']);
     } else {
-        echo json_encode(['success' => false, 'message' => '用戶名或密碼錯誤']);
+        echo json_encode(['success' => false, 'message' => '傳送失敗']);
     }
     $stmt->close();
 } else {
