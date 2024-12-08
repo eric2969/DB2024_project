@@ -3,7 +3,7 @@ header('Content-Type: application/json');
 
 session_start();
 
-$file_path = 'credentials.txt';
+$file_path = '../credentials.txt';
 
 // 確認檔案存在且可讀取
 if (file_exists($file_path) && is_readable($file_path)) {

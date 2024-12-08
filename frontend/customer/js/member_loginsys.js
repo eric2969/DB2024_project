@@ -10,7 +10,7 @@ function member_signup(){
         return;
     }
     $.ajax({
-        url: 'http://localhost/backend/member_register.php',
+        url: 'http://localhost/backend/mem/member_register.php',
         type: 'POST',
         dataType: 'json',
         data: JSON.stringify({ username: username, password: password, mail: mail, bdate: bdate}),
@@ -39,7 +39,7 @@ function member_login() {
     console.log(username, password);
     //var remember = $('#remember').is(':checked');
     $.ajax({
-        url: 'http://localhost/backend/member_login.php',
+        url: 'http://localhost/backend/mem/member_login.php',
         type: 'POST',
         dataType: 'json',
         data: JSON.stringify({ username: username, password: password}),

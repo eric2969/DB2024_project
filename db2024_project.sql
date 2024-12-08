@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2024-11-22 18:13:11
+-- 產生時間： 2024-12-08 08:47:49
 -- 伺服器版本： 10.4.32-MariaDB
--- PHP 版本： 8.2.12
+-- PHP 版本： 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- 資料庫： `db2024_project`
+-- 資料庫： `dber`
 --
 
 -- --------------------------------------------------------
@@ -55,11 +55,22 @@ CREATE TABLE `attendance` (
 
 CREATE TABLE `complaint` (
   `compID` int(11) NOT NULL,
-  `complainant` int(11) NOT NULL,
-  `EmpID` int(11) NOT NULL,
+  `complainant` text NOT NULL,
+  `email` text NOT NULL,
   `reason` text NOT NULL,
   `create_time` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- 傾印資料表的資料 `complaint`
+--
+
+INSERT INTO `complaint` (`compID`, `complainant`, `email`, `reason`, `create_time`) VALUES
+(1, '0', 'bruh', 'bruh', '2024-12-08 15:33:20'),
+(2, '趙子佾', 'eric920425@gmail.com', 'fuck you', '2024-12-08 08:43:34'),
+(3, '趙子佾', 'eric920425@gmail.com', 'fuck you', '2024-12-08 08:44:20'),
+(4, '趙子佾', 'eric920425@gmail.com', 'fuck you', '2024-12-08 08:44:28'),
+(5, '趙子佾', 'eric920425@gmail.com', 'fuck you', '2024-12-08 08:45:08');
 
 -- --------------------------------------------------------
 
@@ -103,6 +114,15 @@ CREATE TABLE `member` (
   `Mem_pass` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- 傾印資料表的資料 `member`
+--
+
+INSERT INTO `member` (`MemID`, `Mem_email`, `Mem_name`, `Mem_bth`, `Mem_phone`, `Mem_addr`, `Mem_pass`) VALUES
+(6, 'eric920425@gmail.com', '趙子佾', '2024-12-04', '', '', '$2y$10$ahcSZXf2V3VcKt2.325DOeS4DC0jUxaln7oEdZkPAY8KaFLzVXEQa'),
+(7, 'eric920425@g', 'er', '2024-12-07', '', '', '$2y$10$yK9rzYK5qZoj9WeUDJg6.OChsHgRrwN0meo4yJ3MblMRVCJ0ei9f6'),
+(8, 'eric2565884', '張晏慈', '2024-12-07', '', '', '$2y$10$Rm.1evBEB0Pny/UpWFZt8OOFTdDYS2uoVQhvsVGQdyZXbQ17frjVC');
+
 -- --------------------------------------------------------
 
 --
@@ -113,7 +133,8 @@ CREATE TABLE `merchandise` (
   `merID` int(11) NOT NULL,
   `mer_name` text NOT NULL,
   `retail_price` int(11) NOT NULL,
-  `start_date` date NOT NULL
+  `start_date` date NOT NULL,
+  `mer_pic` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -272,7 +293,7 @@ ALTER TABLE `admins`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `complaint`
 --
 ALTER TABLE `complaint`
-  MODIFY `compID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `compID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `dept`
@@ -290,7 +311,7 @@ ALTER TABLE `employee`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member`
 --
 ALTER TABLE `member`
-  MODIFY `MemID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `MemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `merchandise`
