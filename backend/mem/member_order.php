@@ -3,16 +3,17 @@ header('Content-Type: application/json');
 
 session_start();
 
-$output = shell_exec('php remember.php');
-// 將 JSON 字串轉換為 PHP 對象
-$dataObject = json_decode($output);
-$member = "";
-if($dataObject['success']){
-    $member = $dataObject['username'];
-} else {
-    echo json_encode(['success' => false, 'message' => "SQL file format error"]);
-    die("SQL file format error");
-}
+// $output = shell_exec('php remember.php');
+// // 將 JSON 字串轉換為 PHP 對象
+// $dataObject = json_decode($output);
+// $member = "";
+// if($dataObject['success']){
+//     $member = $dataObject['username'];
+// } else {
+//     echo json_encode(['success' => false, 'message' => "SQL file format error"]);
+//     die("SQL file format error");
+// }
+
 
 $file_path = '../credentials.txt';
 
@@ -47,6 +48,9 @@ $con->query("SET NAMES 'utf8'");
 $input = json_decode(file_get_contents('php://input'), true);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['start_time']) && isset($input['end_time'])) {
+    //$unixTimeStamp = 1420070400;
+    //$start_time = date('Y-m-d', $unixTimeStamp);
+    //$end_time = date('Y-m-d');
     $start_time = $input['start_time'];
     $end_time = $input['end_time'];
 

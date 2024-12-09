@@ -67,7 +67,7 @@ function dec() {
 
 function inc() {
     var input = parseInt($('#shop_amount').val());
-    input = Math.min(9, input + 1);
+    input = Math.min(99, input + 1);
     $("#shop_amount").val(input);
 }
 

@@ -1,6 +1,6 @@
 function loadOrders() {
     $.ajax({
-        url: 'http://localhost/backend/member_order.php',
+        url: 'http://localhost/backend/mem/member_order.php',
         type: 'POST',
         dataType: 'json',
         data:{
@@ -78,6 +78,7 @@ function loadOrders() {
                     //$('#deleteConfirmModal').data('id', ordId).modal('show');
                 });
             } else {
+                alert(response.message);
                 $('#user order').html(response.message);
             }
         },
@@ -192,7 +193,7 @@ $(document).ready(function() {
     //         }
     //     });
     // }
-    loadBookings();
+    loadOrders();
 
     $('#edit-booking-form').on('submit', function(event) {
         event.preventDefault();
