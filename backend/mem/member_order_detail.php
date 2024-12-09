@@ -47,20 +47,18 @@ if (!$con) {
 $con->query("SET NAMES 'utf8'");
 
 $input = json_decode(file_get_contents('php://input'), true);
-$start_time = "0";
-$end_time = "0";
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['start_time']) && isset($input['end_time'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['OrdID'])) {
 
     //$unixTimeStamp = 1420070400;
     //$start_time = date('Y-m-d', $unixTimeStamp);
     //$end_time = date('Y-m-d');
-    $start_time = $input['start_time'];
-    $end_time = $input['end_time'];
+    $OrdID = $input['OrdID'];
 
-    $query = "SELECT `OrdID`, `Way_to_pay`, `create_time`, `income`, `iscancel`, `Address` FROM orders WHERE CusID = ? AND create_time BETWEEN ? AND ? ORDER BY create_time";
+    $query = "SELECT od.MerID AS `MerID`, od.Quantity AS `Quantity`, mer.retail_price AS `Price`, mer.mer_name AS `Name` FROM order_detail AS od JOIN merchandise AS mer ON od.MerID=mer.merID WHERE OrdID = ?";
     $stmt = $con->prepare($query);
-    $stmt->bind_param("sss", $member, $start_time, $end_time);
+    
+    $stmt->bind_param("s", $OrdID);
     $stmt->execute();
 
     $result = $stmt->get_result();
@@ -76,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['start_time']) && isset
     }
     $stmt->close();
 } else {
-    echo json_encode(['success' => false, 'message' => '無效的請求'.$start_time.$end_time]);
+    echo json_encode(['success' => false, 'message' => '無效的請求']);
 }
 
 $con->close();

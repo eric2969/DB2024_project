@@ -1,71 +1,140 @@
+function loadProducts(id){
+    var shopping_list_html = ''; // 存放購物清單的 HTML
+    var subtotal = 0;
+    $.ajax({
+        url: 'http://localhost/backend/mem/member_order_detail.php',
+        type: 'POST',
+        dataType: 'json',
+        data:JSON.stringify({OrdID: id}),
+        success: function(response) {
+            if (response.success) {
+                // 處理回傳的商品資料
+                
+                response.data.forEach(function(product) {
+                    subtotal += parseInt(product.Quantity)*parseInt(product.Price);
+                    var product_html = `
+                        <tr>
+                            <td>${product.MerID}
+                            <td>${product.Name}</td>
+                            <td>${product.Quantity}</td>
+                            <td>$${product.Price}</td>
+                            <td>
+                                <button class="btn btn-primary" type="button" onclick="window.open('product.html?MerID=${product.MerID}', '_blank')" style="background: transparent; color: blue; border: 1px solid blue;">
+                                    詳細資訊
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    shopping_list_html += product_html; // 將每個產品的 HTML 加入
+                });
+                $(`#product_info_${id}`).html(shopping_list_html);
+                $(`#${id}_subtotal`).text("$ "+subtotal);
+                //alert(shopping_list_html);
+            }
+            else{
+                alert("ㄐㄐ");
+                $(`#product_info_${id}`).html("系統忙碌中");
+            }
+        },
+        error: function(jqXHR) {
+            alert("系統錯誤，代碼"+jqXHR.status+"\n");
+            console.log(jqXHR);
+        }
+    });
+}
+
 function loadOrders() {
+    var st = String($('#start_time').val());
+    var et = String($('#end_time').val());
     $.ajax({
         url: 'http://localhost/backend/mem/member_order.php',
         type: 'POST',
         dataType: 'json',
-        data:{
-            //start_time: $("#start_time").val(),
-            //end_time: $("#end_time").val()
-        },
+        data:JSON.stringify({
+            start_time: st,
+            end_time: et
+        }),
         success: function(response) {
             if (response.success) {
                 var section_list = '';
+                var tmp = ''
                 response.data.forEach(function(order) {
+
                     var section_html = `
-                        <div class="container" style="border-style: solid;padding: 20px;height: 20%;margin-top: 10px;margin-bottom: 10px;">
-                            <div class="row">
-                                <div class="col">
-                                    <h1>訂單 ${order.OrdID}</h1>
-                                </div>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>時間</th>
-                                            <th>金額</th>
-                                            <th>付款方式</th>
-                                            <th>訂單狀態</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><p>${order.time}</p></td>
-                                            <td><p>${order.income}</p></td>
-                                            <td><p>${order.Way_to_pay}</p></td>
-                                            <td><button id="more_${order.OrdID}_btn" class="btn btn-primary" type="button" style="background: transparent;color: rgb(0,0,0);height: 40px;width: 30px;border-color: var(--bs-btn-bg);"><i class="fa fa-caret-right"></i></button></td>
-                                            <td><button class="btn btn-primary edit-booking" data-id="${order.OrdID}" data-toggle="modal" data-target="#editBookingModal" type="button" style="width: 60px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: var(--bs-btn-bg);">修改</button></td>
-                                            <td><button class="btn btn-primary delete-booking" data-id="${order.OrdID}" data-toggle="modal" data-target="#deleteConfirmModal" type="button" style="width: 60px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: rgb(255,0,0);">刪除</button></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div id="more_${order.OrdID}_div" class="card shadow" style="display: none;">
-                                <div class="card-header py-3">
-                                    <p class="text-primary m-0 fw-bold">詳細</p>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col">
-                                            <p>電話</p>
-                                            <p>${order.OrdID}</p>
-                                        </div>
-                                        <div class="col">
-                                            <p>備註</p>
-                                            <p>${order.OrdID}</p>
-                                        </div>
+                        <tr>
+                            <td>${order.OrdID}</td>
+                            <td>${order.income}</td>
+                            <td>${order.create_time}</td>
+                            <td>${order.iscancel}</td>
+                            <td><button id="more_${order.OrdID}_btn" class="btn btn-primary shadow ref-button" type="button" style="background: transparent;color: rgb(0,0,0);height: 40px;width: 100px;border-color: var(--bs-btn-bg);">...</button></td>
+                            <td><button class="btn btn-primary shadow edit-booking" data-id="${order.OrdID}" data-toggle="modal" data-target="#editBookingModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: var(--bs-btn-bg);">修改</button></td>
+                            <td><button class="btn btn-primary shadow delete-booking" data-id="${order.OrdID}" data-toggle="modal" data-target="#deleteConfirmModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: rgb(255,0,0);">刪除</button></td>
+                        </tr>
+                        <tr id="more_${order.OrdID}_div" style="display: none;">
+                            <td class="card-header py-3" align="center" rowspan=1>
+                                <p class="text-primary m-0 fw-bold">More Info</p>
+                            </td>
+                            <td colspan=7>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <p>Address</p>
+                                        <p>${order.Address}</p>
+                                    </div>
+                                    <div class="col">
+                                        <p>Way to pay</p>
+                                        <p>${order.Way_to_pay}</p>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </div></td>
+                        </tr>
+                        <tr id="more_${order.OrdID}_detail" style="display: none;">
+                            <td colspan=7 align='justify'>
+                                <table align='center'>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Product Name</th>
+                                            <th>Quantity</th>
+                                            <th>Price</th>
+                                            <th>Details</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="product_info_${order.OrdID}">
+
+                                    </tbody>
+                                    
+                                </table>
+                                <div>
+                                    <div class="ref-totals" >
+                                        <div class="ref-subtotal">
+                                            <div><div style="text-align:left;">Subtotal</div><div style="text-align:right;"><label id="${order.OrdID}_subtotal"></label></div></div>
+                                        </div>
+                                        <div class="ref-shipping">
+                                            <span style="text-align:left;">Shipping</span> <div style="text-align:right;"><label style="text-align:right;">$ 70</label></div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="ref-total">
+                                        <div><div style="text-align:left;">Total</div><div style="text-align:right;">$ ${order.income}</div></div>
+                                        <div class="ref-total-note"></div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
                     `;
                     section_list += section_html;
+                    
                 });
-                $('#user order').html(section_list);
+                //section_list += `</tbody>`
+                $('#order-list').html(section_list);
+                $('#order-tmp').html(tmp);
                 // 動態添加的按鈕需要綁定事件
                 $('button[id^="more_"]').on('click', function() {
                     var id = $(this).attr('id').split('_')[1];
                     $('#more_' + id + '_div').toggle();
+                    $('#more_' + id + '_detail').toggle();
+                    loadProducts(id);
                 });
                 $('.edit-booking').on('click', function() {
                     var ordId = $(this).data('id');
@@ -79,7 +148,7 @@ function loadOrders() {
                 });
             } else {
                 alert(response.message);
-                $('#user order').html(response.message);
+                $('order-list').html(response.message);
             }
         },
         error: function(jqXHR) {
