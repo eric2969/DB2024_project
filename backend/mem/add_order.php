@@ -43,6 +43,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['name']) && isset($inpu
         $payment = "Credit Card";
         $cart = json_decode($input['cart'], true);
         $income = $input['income'];
+        $rem = 1;
+
+        //chk remain
+        $con->autocommit(FALSE);
+        foreach ($cart as $merid => $quan) {
+            $query = "SELECT `remain` FROM Merchandise WHERE `MerID` = ?";
+            $stmt = $con->prepare($query);
+            $stmt->bind_param("i", $merid);
+            $stmt->execute();
+            $stmt->store_result();
+            $stmt->bind_result($stock);
+            $stmt->fetch();
+            if ($stmt->num_rows > 0 && $stock >= $quan) {
+                $query = "UPDATE Merchandise SET `remain` = `remain` -? WHERE `MerID` =?";
+                $stmt = $con->prepare($query);
+                $stmt->bind_param("ii", $quan, $merid);
+                if (!$stmt->execute()) {
+                    $rem = 0;
+                    $con->rollback();
+                    echo json_encode(['success' => false, 'message' => 'Update remain error']);
+                    $stmt->close();
+                    $con->close();
+                    die();
+                }
+            } else {
+                $rem = 0;
+                $con->rollback();
+                echo json_encode(['success' => false, 'message' => '商品庫存不足']);
+                $stmt->close();
+                $con->close();
+                die();
+            }
+        }
+        if($rem){
+            $con->commit();
+        } else {
+            $con->rollback();
+            echo json_encode(['success' => false, 'message' => '商品庫存不足']);
+            $stmt->close();
+            $con->close();
+            die();
+        }
 
         $query = "INSERT INTO orders (`CusID`, `Name`, `Phone`, `address`, `Way_to_pay`, `income`) VALUES(?, ?, ?, ?, ?, ?)";
         $stmt = $con->prepare($query);
