@@ -108,15 +108,15 @@ function loadOrders() {
                                 <div>
                                     <div class="ref-totals" >
                                         <div class="ref-subtotal">
-                                            <div><div style="text-align:left;">Subtotal</div><div style="text-align:right;"><label id="${order.OrdID}_subtotal"></label></div></div>
+                                            <div><span display="block" float="left">Subtotal</span><span style="display:block; float:right; text-align:right;"><label id="${order.OrdID}_subtotal"></label></span></div>
                                         </div>
                                         <div class="ref-shipping">
-                                            <span style="text-align:left;">Shipping</span> <div style="text-align:right;"><label style="text-align:right;">$ 70</label></div>
+                                            <span display="block" float="left">Shipping</span> <span style="display:block; float:right; text-align:right;"><label style="text-align:right;">$ 70</label></span>
                                         </div>
                                     </div>
                                     <hr>
                                     <div class="ref-total">
-                                        <div><div style="text-align:left;">Total</div><div style="text-align:right;">$ ${order.income}</div></div>
+                                        <div><span display="block" float="left">Total</span><span style="display:block; float:right; text-align:right;">$ ${order.income}</span></div>
                                         <div class="ref-total-note"></div>
                                     </div>
                                 </div>
@@ -262,7 +262,6 @@ $(document).ready(function() {
     //         }
     //     });
     // }
-    loadOrders();
 
     $('#edit-booking-form').on('submit', function(event) {
         event.preventDefault();
