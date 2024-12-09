@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2024-12-08 21:09:26
+-- 產生時間： 2024-12-09 14:57:28
 -- 伺服器版本： 10.4.32-MariaDB
--- PHP 版本： 8.0.30
+-- PHP 版本： 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -186,15 +186,10 @@ CREATE TABLE `order_detail` (
   `OrdID` int(11) NOT NULL,
   `MerID` int(11) NOT NULL,
   `Quantity` int(11) NOT NULL,
-  `create_time` datetime NOT NULL
+  `create_time` datetime NOT NULL,
+  `phone` varchar(10) DEFAULT NULL,
+  `address` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- 傾印資料表的資料 `order_detail`
---
-
-INSERT INTO `order_detail` (`OrdID`, `MerID`, `Quantity`, `create_time`) VALUES
-(1, 1, 114514, '2024-12-08 18:58:46');
 
 -- --------------------------------------------------------
 
