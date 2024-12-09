@@ -9,8 +9,6 @@
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.reflowhq.com/v2/toolkit.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
-    <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/member_loginsys.js"></script> 
 </head>
 
 <body>
@@ -24,18 +22,109 @@
                     <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="products.html">Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="Complant.html">Complaint</a></li>
-                </ul><a href="shopping-cart.html" style="width: 40px;height: 40px;background: url(&quot;assets/img/clipboard-image.png&quot;) center / contain no-repeat;"></a><a class="btn btn-primary shadow login_btn" role="button" style="padding: 9.6px 9.6px;width: 100px;margin: 10px; display:none;" onclick="member_logout();">Log Out</a><a class="btn btn-primary shadow login_btn" role="button" href="order_detail.html" style="padding: 9.6px 9.6px;width: 100px;margin: 10px; display:none;">My Order</a><a class="btn btn-primary shadow logout_btn" role="button" href="login.html" style="padding: 9.6px 9.6px;width: 100px;margin: 10px;">Sign in</a><a class="btn btn-primary logout_btn" role="button" style="width: 100px;padding: 9.6px 9.6px;margin: 10px;" data-bs-target="index.html" href="signup.html">Sign Up</a>
+                </ul><a href="shopping-cart.html" style="width: 40px;height: 40px;background: url(&quot;assets/img/clipboard-image.png&quot;) center / contain no-repeat;"></a><a class="btn btn-primary shadow" role="button" href="login.html" style="padding: 9.6px 9.6px;width: 100px;margin: 10px;">Sign in</a><a class="btn btn-primary" role="button" style="width: 100px;padding: 9.6px 9.6px;margin: 10px;" data-bs-target="index.html" href="signup.html">Register</a>
             </div>
         </div>
     </nav>
     <section class="py-5">
+        <div class="row d-flex justify-content-center" style="padding-top: 5rem;margin-right: 5rem;margin-left: 5rem;padding-right: 8rem;padding-left: 8rem;">
+            <div class="col-md-6 col-xl-4">
+                <div class="mb-3">
+                    <h3 class="text-center">Start Date</h3>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+                <div class="mb-3">
+                    <h3 class="text-center">End Date</h3>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+                <div class="mb-3"></div>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center" style="margin-right: 5rem;margin-left: 5rem;padding-right: 8rem;padding-left: 8rem;">
+            <div class="col-md-6 col-xl-4">
+                <div class="mb-3"><input id="start_time" class="form-control mb-3" type="date"></div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+                <div class="mb-3"><input id="end_time" class="form-control mb-3" type="date"></div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+                <div class="mb-3"><input class="btn btn-primary d-block w-100" type="submit" value="Submit" onclick="loadOrders();"></div>
+            </div>
+        </div>
         <div class="container py-5">
-            <div class="row mx-auto">
-                <div class="col">
-                    <div data-reflow-type="user-orders"></div>
+    <div class="row mx-auto">
+        <div class="col">
+            <div data-reflow-type="user-orders">
+                <div class="reflow-user-orders">
+                    <div class="ref-auth-orders-guest" style="display: none;">
+                        <div class="ref-signin-prompt">Sign in to view your orders</div>
+                        <div class="ref-auth-button" data-reflow-type="auth-button">
+                            <div class="reflow-auth-button">
+                                <div class="ref-auth-button-guest">
+                                    <div class="ref-button ref-sign-in">Sign In</div>
+                                    <div class="ref-register">Don&#39;t have an account? <span class="text-primary">Register<span></span></span></div>
+                                </div>
+                                <div class="ref-auth-button-signed"><a class="ref-profile-info"></a>
+                                    <div class="ref-button ref-sign-out">Sign Out</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ref-auth-orders-signed" style="display: block;">
+                        <div class="ref-orders">
+                            <div class="ref-orders-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <td>Order</td>
+                                            <td>date</td>
+                                            <td>status</td>
+                                            <td>Products</td>
+                                            <td>Total</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>#2050714543</td>
+                                            <td>2024/11/12 上午12:23:47</td>
+                                            <td>returned</td>
+                                            <td>2</td>
+                                            <td>$660.15</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="ref-orders-pagination" data-reflow-type="pagination">
+                                <ul class="ref-pagination">
+                                    <li class="ref-page-item" data-reflow-page="NaN"><a class="ref-page-link ref-prev-btn" href="file:///C:/Users/eric2/AppData/Local/Programs/bstudio/resources/app.asar/app/index.html?server=https%3A%2F%2Fbootstrapstudio.io&amp;version=7.0.0&amp;page=NaN">
+                                            <!--?xml version='1.0' encoding='iso-8859-1'?--><svg id="Capa_1" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 34.075 34.075" style="enable-background:new 0 0 34.075 34.075;" xml:space="preserve">
+                                                <g>
+                                                    <g>
+                                                        <path style="fill:currentColor;" d="M24.57,34.075c-0.505,0-1.011-0.191-1.396-0.577L8.11,18.432c-0.771-0.771-0.771-2.019,0-2.79 L23.174,0.578c0.771-0.771,2.02-0.771,2.791,0s0.771,2.02,0,2.79l-13.67,13.669l13.67,13.669c0.771,0.771,0.771,2.021,0,2.792 C25.58,33.883,25.075,34.075,24.57,34.075z"></path>
+                                                    </g>
+                                                </g>
+                                            </svg>
+                                        </a></li>
+                                    <li class="ref-page-item" data-reflow-page="NaN"><a class="ref-page-link ref-next-btn" href="file:///C:/Users/eric2/AppData/Local/Programs/bstudio/resources/app.asar/app/index.html?server=https%3A%2F%2Fbootstrapstudio.io&amp;version=7.0.0&amp;page=NaN">
+                                            <!--?xml version='1.0' encoding='iso-8859-1'?--><svg id="Capa_1" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 185.343 185.343" style="enable-background:new 0 0 185.343 185.343;" xml:space="preserve">
+                                                <g>
+                                                    <g>
+                                                        <path style="fill:currentColor;" d="M51.707,185.343c-2.741,0-5.493-1.044-7.593-3.149c-4.194-4.194-4.194-10.981,0-15.175 l74.352-74.347L44.114,18.32c-4.194-4.194-4.194-10.987,0-15.175c4.194-4.194,10.987-4.194,15.18,0l81.934,81.934 c4.194,4.194,4.194,10.987,0,15.175l-81.934,81.939C57.201,184.293,54.454,185.343,51.707,185.343z"></path>
+                                                    </g>
+                                                </g>
+                                            </svg>
+                                        </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
     </section>
     <footer class="bg-primary-gradient">
         <div class="container py-4 py-lg-5">

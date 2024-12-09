@@ -1,3 +1,63 @@
+function dec(merid){
+    let cart_cookie = getCookie("shop_cart");
+    if(cart_cookie){
+        let shop_cart = JSON.parse(cart_cookie);
+        console.log(shop_cart);
+        if(shop_cart.hasOwnProperty(merid))
+            shop_cart[merid] -= 1;
+        var cart_data = JSON.stringify(shop_cart);
+    }
+    setCookie("shop_cart", cart_data); // 30 days
+    location.reload();
+}
+
+function inc(merid){
+    let cart_cookie = getCookie("shop_cart");
+    if(cart_cookie){
+        let shop_cart = JSON.parse(cart_cookie);
+        console.log(shop_cart);
+        if(shop_cart.hasOwnProperty(merid))
+            shop_cart[merid] += 1;
+        var cart_data = JSON.stringify(shop_cart);
+    }
+    setCookie("shop_cart", cart_data); // 30 days
+    location.reload();
+}
+
+function rev(merid){
+    let cart_cookie = getCookie("shop_cart");
+    if(cart_cookie){
+        let shop_cart = JSON.parse(cart_cookie);
+        console.log(shop_cart);
+        if(shop_cart.hasOwnProperty(merid))
+            shop_cart[merid] = 0;
+        var cart_data = JSON.stringify(shop_cart);
+    }
+    setCookie("shop_cart", cart_data); // 30 days
+    location.reload();
+}
+
+function checkout(){
+    if($("#checkout-agreement").is(":checked")){
+        if(chk_login()){
+            $("#cart_checkout").css('display', 'block');
+            $("#cart_prod").css('display', 'none');
+        } else {
+            alert("請先登入");
+            window.location.href = "login.html";
+            return;
+        }
+    } else {
+        alert("請先勾選同意");
+        return;
+    }
+}
+
+function back_cart(){
+    $("#cart_checkout").css('display', 'none');
+    $("#cart_prod").css('display', 'block');
+}
+
 function LoadCart() {
     var subtotal = 0;
     let cart_cookie = getCookie("shop_cart");
@@ -5,6 +65,8 @@ function LoadCart() {
     if(cart_cookie){
         let shop_cart = JSON.parse(cart_cookie);
         Object.keys(shop_cart).forEach(function(k){
+            if(!shop_cart[k])
+                return;
             $.ajax({
                 url: 'http://localhost/backend/mem/merchandise.php',
                 type: 'POST',
@@ -35,13 +97,13 @@ function LoadCart() {
                                                 <div class="ref-product-quantity">
                                                     <div class="ref-quantity-container">
                                                         <div class="ref-quantity-widget">
-                                                            <div class="ref-decrease"><span></span></div>
+                                                            <div class="ref-decrease" onclick="dec(${k});"><span></span></div>
                                                             <input type="text" value="${shop_cart[k]}" />
-                                                            <div class="ref-increase"><span></span></div>
+                                                            <div class="ref-increase" onclick="inc(${k});"><span></span></div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="ref-product-remove">
+                                                <div class="ref-product-remove" onclick="rev(${k});">
                                                     <svg xmlns="http://www.w3.org/2000/svg" height="18" width="18" viewBox="0 0 48 48">
                                                         <path fill="currentColor" d="M13.05 42q-1.2 0-2.1-.9-.9-.9-.9-2.1V10.5H8v-3h9.4V6h13.2v1.5H40v3h-2.05V39q0 1.2-.9 2.1-.9.9-2.1.9Zm21.9-31.5h-21.9V39h21.9Zm-16.6 24.2h3V14.75h-3Zm8.3 0h3V14.75h-3Zm-13.6-24.2V39Z"></path>
                                                     </svg>
@@ -57,13 +119,13 @@ function LoadCart() {
                                     <div class="ref-product-quantity">
                                         <div class="ref-quantity-container">
                                             <div class="ref-quantity-widget">
-                                                <div class="ref-decrease"><span></span></div>
+                                                <div class="ref-decrease" onclick="dec(${k});"><span></span></div>
                                                 <input type="number" value="${shop_cart[k]}" id="${k}"/>
-                                                <div class="ref-increase"><span></span></div>
+                                                <div class="ref-increase" onclick="inc(${k});"><span></span></div>
                                             </div>
                                         </div>
                                         <div class="ref-product-qty-message"></div>
-                                        <div class="ref-product-remove">Remove</div>
+                                        <div class="ref-product-remove" onclick="rev(${k});">Remove</div>
                                     </div>
                                 </div>
                                 <div class="ref-total-col">
@@ -74,7 +136,7 @@ function LoadCart() {
                                 `;
                                 // 插入商品卡片到容器
                                 productContainer.appendChild(productCard);
-                                $("#cart_subtotal").text("Subtotal: $" + subtotal);
+                                $("#cart_subtotal").text(subtotal);
                             });
                         } else 
                             console.error("Unexpected response format:", response.message);
@@ -93,5 +155,7 @@ function LoadCart() {
 
 $(document).ready(function() {
     // 發送請求獲取商品資料
+    $("#cart_checkout").css('display', 'none');
+    $("#cart_prod").css('display', 'block');
     LoadCart();
 });

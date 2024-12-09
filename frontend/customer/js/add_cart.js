@@ -21,9 +21,4 @@ function addCart(merid){
 
 $(document).ready(function() {
     // 發送請求獲取商品資料
-    let cart_cookie = getCookie("shop_cart");
-    if(cart_cookie){
-        let shop_cart = JSON.parse(cart_cookie);
-        console.log(shop_cart);
-    }
 });

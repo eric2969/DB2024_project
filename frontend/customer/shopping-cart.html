@@ -36,7 +36,7 @@
                 <div class="col">
                     <div>
                         <div class="reflow-shopping-cart" style="display: block;">
-                            <div class="ref-cart" style="display: block;">
+                            <div id="cart_prod" class="ref-cart" style="display: block;">
                                 <div class="ref-heading">Shopping Cart</div>
                                 <div class="ref-th">
                                     <div class="ref-product-col">Product</div>
@@ -50,18 +50,18 @@
                                 <div class="ref-footer">
                                     <div class="ref-links"><a href="#">Terms &amp; Conditions</a><a href="#">Privacy Policy</a><a href="#">Refund Policy</a></div>
                                     <div class="ref-totals">
-                                        <div class="ref-subtotal" id="cart_subtotal">Subtotal: $</div>
-                                        <form class="ref-accept-terms" style="display: block;"><label><input id="ref-terms-agreement" type="checkbox" data-state-src="accept-terms" required /><span class="ref-terms-agreement-text"><span>I agree to the </span><a href="https://google.com">Terms &amp; Conditions</a><span>, </span><a href="https://google.com">Privacy Policy</a><span> and </span><a href="https://google.com">Refund Policy</a></span></label></form>
+                                        <div class="ref-subtotal">Subtotal: $<span id="cart_subtotal"></span></div>
+                                        <form class="ref-accept-terms" style="display: block;"><label><input id="checkout-agreement" type="checkbox" data-state-src="accept-terms" required />Terms &amp; Conditions, Privacy Policy and Refund Policy</label></form>
                                         <div class="ref-row ref-checkout-buttons">
-                                            <div class="ref-button ref-standard-checkout-button">Checkout</div>
+                                            <div class="ref-button ref-standard-checkout-button" onclick="checkout();">Checkout</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="ref-checkout" style="display: block;">
+                            <div id="cart_checkout" class="ref-checkout" style="display: block;">
                                 <div>
                                     <form class="ref-details">
-                                        <div class="ref-back">← Back to Cart</div>
+                                        <div class="ref-back" onclick="back_cart();">← Back to Cart</div>
                                         <div class="ref-heading">Customer Details</div>
                                         <label><span>Email</span><input id="ref-field-email" class="ref-form-control" type="email" name="email" value required data-state-src="email" placeholder="email"/>
                                             <div class="ref-validation-error"></div>
