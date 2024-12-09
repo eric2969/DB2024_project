@@ -71,17 +71,21 @@ function member_logout() {
 }
 
 function chk_login(){
+    var result;
     $.ajax({
         url: 'http://localhost/backend/mem/check_login.php',
         type: 'POST',
+        async: false,
         dataType: 'json',
         success: function(response) {
+            result = response.logged_in;
             return response.logged_in;
         },
         error: function(jqXHR) {
             console.log(jqXHR);
         }
     });
+    return result;
 }
 $(document).ready(function() {
     var objDate = new Date();
