@@ -13,7 +13,7 @@ session_start();
 //     echo json_encode(['success' => false, 'message' => "SQL file format error"]);
 //     die("SQL file format error");
 // }
-
+$member = $_SESSION['member'];
 
 $file_path = '../credentials.txt';
 
@@ -47,12 +47,12 @@ $con->query("SET NAMES 'utf8'");
 
 $input = json_decode(file_get_contents('php://input'), true);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['start_time']) && isset($input['end_time'])) {
-    //$unixTimeStamp = 1420070400;
-    //$start_time = date('Y-m-d', $unixTimeStamp);
-    //$end_time = date('Y-m-d');
-    $start_time = $input['start_time'];
-    $end_time = $input['end_time'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST'){// && isset($input['start_time']) && isset($input['end_time'])) {
+    $unixTimeStamp = 1420070400;
+    $start_time = date('Y-m-d', $unixTimeStamp);
+    $end_time = date('Y-m-d');
+    // $start_time = $input['start_time'];
+    // $end_time = $input['end_time'];
 
     $query = "SELECT `OrdID`, `Way_to_pay`, `create_time`, `income`, `iscancel` FROM orders WHERE CusID = ? AND create_time BETWEEN ? AND ? ORDER BY create_time";
     $stmt = $con->prepare($query);
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['start_time']) && isset
         }
         echo json_encode(['success' => true, 'data' => $orders]);
     } else {
-        echo json_encode(['success' => false, 'message' => '沒有找到任何訂位資訊']);
+        echo json_encode(['success' => false, 'message' => '沒有找到任何訂單資訊']);
     }
     $stmt->close();
 } else {

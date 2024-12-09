@@ -4,8 +4,8 @@ function loadOrders() {
         type: 'POST',
         dataType: 'json',
         data:{
-            start_time: $("#start_time").val(),
-            end_time: $("#end_time").val()
+            //start_time: $("#start_time").val(),
+            //end_time: $("#end_time").val()
         },
         success: function(response) {
             if (response.success) {
