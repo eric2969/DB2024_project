@@ -42,6 +42,10 @@ function checkout(){
         if(chk_login()){
             $("#cart_checkout").css('display', 'block');
             $("#cart_prod").css('display', 'none');
+            var subtotal = parseInt($("#cart_subtotal").text());
+            $("#chk_subtotal").text("$ " + subtotal);
+            $("#chk_shipping").text("$ " + 70);
+            $("#chk_total").text("$ " + (subtotal + 70));
         } else {
             alert("請先登入");
             window.location.href = "login.html";
@@ -151,6 +155,32 @@ function LoadCart() {
         
     }
         
+}
+
+function cart_confirm(){
+    var name = $("#chk_name").val();
+    var phone = $("#chk_phone").val();
+    var addr = $("#chk_addr").val();
+    if(name == "" || phone == "" || addr == ""){
+        alert("請填寫完整的購物資料");
+        return;
+    }
+    var total = parseInt($("#cart_subtotal").text()) + 70;
+    let cart_cookie = getCookie("shop_cart");
+    let shop_cart = JSON.parse(cart_cookie);
+    $.ajax({
+        url: 'http://localhost/backend/mem/add_order.php',
+        type: 'POST',
+        dataType: 'json',
+        data:JSON.stringify({name: name, phone: phone, addr: addr, cart: JSON.stringify(shop_cart), income: total}),
+        success: function(response) {
+            console.log(response);
+        },
+        error: function(jqXHR) {
+            alert("系統錯誤，代碼"+jqXHR.status+"\n");
+            console.log(jqXHR);
+        }
+    });
 }
 
 $(document).ready(function() {
