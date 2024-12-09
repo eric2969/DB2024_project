@@ -34,21 +34,62 @@ if (!$con) {
 $con->query("SET NAMES 'utf8'");
 
 $input = json_decode(file_get_contents('php://input'), true);
-echo json_encode($input);
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['name']) && isset($input['phone']) && isset($input['addr']) && isset($input['cart']) && isset($input['income'])) {
     if(isset($_SESSION['member'])){
         $memid = $_SESSION['member'];
         $name = $input['name'];
         $phone = $input['phone'];
         $addr = $input['addr'];
+        $payment = "Credit Card";
         $cart = json_decode($input['cart'], true);
         $income = $input['income'];
+        $rem = 1;
 
-        $query = "INSERT INTO orders (`CusID`, `Name`, `Phone`, `address`, `income`) VALUES(?, ?, ?, ?, ?)";
+        //chk remain
+        $con->autocommit(FALSE);
+        foreach ($cart as $merid => $quan) {
+            $query = "SELECT `remain` FROM Merchandise WHERE `MerID` = ?";
+            $stmt = $con->prepare($query);
+            $stmt->bind_param("i", $merid);
+            $stmt->execute();
+            $stmt->store_result();
+            $stmt->bind_result($stock);
+            $stmt->fetch();
+            if ($stmt->num_rows > 0 && $stock >= $quan) {
+                $query = "UPDATE Merchandise SET `remain` = `remain` -? WHERE `MerID` =?";
+                $stmt = $con->prepare($query);
+                $stmt->bind_param("ii", $quan, $merid);
+                if (!$stmt->execute()) {
+                    $rem = 0;
+                    $con->rollback();
+                    echo json_encode(['success' => false, 'message' => 'Update remain error']);
+                    $stmt->close();
+                    $con->close();
+                    die();
+                }
+            } else {
+                $rem = 0;
+                $con->rollback();
+                echo json_encode(['success' => false, 'message' => '商品庫存不足']);
+                $stmt->close();
+                $con->close();
+                die();
+            }
+        }
+        if($rem){
+            $con->commit();
+        } else {
+            $con->rollback();
+            echo json_encode(['success' => false, 'message' => '商品庫存不足']);
+            $stmt->close();
+            $con->close();
+            die();
+        }
+
+        $query = "INSERT INTO orders (`CusID`, `Name`, `Phone`, `address`, `Way_to_pay`, `income`) VALUES(?, ?, ?, ?, ?, ?)";
         $stmt = $con->prepare($query);
-        $stmt->bind_param("sssss", $memid, $name, $phone, $addr, $income);
+        $stmt->bind_param("ssssss", $memid, $name, $phone, $addr, $payment, $income);
         if ($stmt->execute()) {
-            echo json_encode(['success' => true, 'message' => '傳送成功']);
             $stmt->close();
         } else {
             echo json_encode(['success' => false, 'message' => '傳送失敗']);
@@ -66,10 +107,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['name']) && isset($inpu
         if ($stmt->num_rows > 0) {
             $stmt->close();
             foreach ($cart as $merid => $quan) {
-                print("Grade: {$gradeText}({$grade}) \n");
+                $query = "INSERT INTO order_detail (`OrdID`, `MerID`, `Quantity`) VALUES(?, ?, ?)";
+                $stmt = $con->prepare($query);
+                $stmt->bind_param("sss", $ordid, $merid, $quan);
+                if ($stmt->execute()) {
+                    $stmt->close();
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'order_detail error']);
+                    $stmt->close();
+                    $con->close();
+                    die();
+                }
             }
+            echo json_encode(['success' => true, 'message' => '訂單成立成功']);
+            $con->close();
+            die();
         } else {
-            echo json_encode(['success' => false, 'message' => 'error']);
+            echo json_encode(['success' => false, 'message' => 'orders error']);
             $stmt->close();
             $con->close();
             die();

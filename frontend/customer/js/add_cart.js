@@ -1,11 +1,20 @@
 function addCart(merid){
     var amount = $("#shop_amount").val();
+    var remain = parseInt($("#prod_remain").text());
+    if(remain < amount){
+        alert("庫存不足!");
+        return;
+    }
     let cart_cookie = getCookie("shop_cart");
     if(cart_cookie){
         let shop_cart = JSON.parse(cart_cookie);
-        console.log(shop_cart);
-        if(shop_cart.hasOwnProperty(merid))
-            shop_cart[merid] += parseInt(amount);
+        if(shop_cart.hasOwnProperty(merid)){
+            if(shop_cart[merid] + amount > remain){ 
+                alert("庫存不足!");
+                return;
+            } else
+                shop_cart[merid] += parseInt(amount);
+        }
         else
             shop_cart[merid] = parseInt(amount);
         var cart_data = JSON.stringify(shop_cart);

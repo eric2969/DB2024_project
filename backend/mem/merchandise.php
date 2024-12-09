@@ -36,7 +36,7 @@ $input = json_decode(file_get_contents('php://input'), true);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if($input['single']){
-        $query = "SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_pic` FROM Merchandise WHERE `MerID` = ?";
+        $query = "SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_pic`, `remain` FROM Merchandise WHERE `MerID` = ?";
         $stmt = $con->prepare($query);
         $stmt->bind_param("i", $input['merid']);
         $stmt->execute();
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         $stmt->close();
     } else {
-        $query = "SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_pic` FROM Merchandise ";
+        $query = "SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_pic`, `remain` FROM Merchandise ";
         $stmt = $con->prepare($query);
         $stmt->execute();
         // $stmt->store_result();

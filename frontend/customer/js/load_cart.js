@@ -2,7 +2,6 @@ function dec(merid){
     let cart_cookie = getCookie("shop_cart");
     if(cart_cookie){
         let shop_cart = JSON.parse(cart_cookie);
-        console.log(shop_cart);
         if(shop_cart.hasOwnProperty(merid))
             shop_cart[merid] -= 1;
         var cart_data = JSON.stringify(shop_cart);
@@ -13,11 +12,17 @@ function dec(merid){
 
 function inc(merid){
     let cart_cookie = getCookie("shop_cart");
+    var remain = parseInt($("#rmn_"+merid).text());
     if(cart_cookie){
         let shop_cart = JSON.parse(cart_cookie);
-        console.log(shop_cart);
-        if(shop_cart.hasOwnProperty(merid))
-            shop_cart[merid] += 1;
+        if(shop_cart.hasOwnProperty(merid)){
+            if(shop_cart[merid] + 1 <= remain){
+                shop_cart[merid] += 1;
+            } else {
+                alert("超出庫存數量");
+                return;
+            }
+        }
         var cart_data = JSON.stringify(shop_cart);
     }
     setCookie("shop_cart", cart_data); // 30 days
@@ -28,7 +33,6 @@ function rev(merid){
     let cart_cookie = getCookie("shop_cart");
     if(cart_cookie){
         let shop_cart = JSON.parse(cart_cookie);
-        console.log(shop_cart);
         if(shop_cart.hasOwnProperty(merid))
             shop_cart[merid] = 0;
         var cart_data = JSON.stringify(shop_cart);
@@ -64,7 +68,10 @@ function back_cart(){
 
 function LoadCart() {
     var subtotal = 0;
+    var remain = {};
     let cart_cookie = getCookie("shop_cart");
+    $("#shop_cart").css('display', 'none');
+    $("#empty_cart").css('display', 'block');
     const productContainer = document.querySelector("#cart_data");
     if(cart_cookie){
         let shop_cart = JSON.parse(cart_cookie);
@@ -84,7 +91,9 @@ function LoadCart() {
                         if (Array.isArray(data)) {
                             data.forEach((product) => {
                                 // 建立商品卡片
+                                isempty = 0;
                                 subtotal += parseInt(product.Retail_price) * shop_cart[k];
+                                remain[k] = product.remain;
                                 const productCard = document.createElement("div");
                                 productCard.className = "ref-product";
                                 productCard.innerHTML = `
@@ -128,7 +137,7 @@ function LoadCart() {
                                                 <div class="ref-increase" onclick="inc(${k});"><span></span></div>
                                             </div>
                                         </div>
-                                        <div class="ref-product-qty-message"></div>
+                                        <div class="ref-product-qty-message">Remain: <span id="rmn_${k}">${product.remain}</span></div>
                                         <div class="ref-product-remove" onclick="rev(${k});">Remove</div>
                                     </div>
                                 </div>
@@ -141,6 +150,8 @@ function LoadCart() {
                                 // 插入商品卡片到容器
                                 productContainer.appendChild(productCard);
                                 $("#cart_subtotal").text(subtotal);
+                                $("#shop_cart").css('display', 'block');
+                                $("#empty_cart").css('display', 'none');
                             });
                         } else 
                             console.error("Unexpected response format:", response.message);
@@ -175,6 +186,14 @@ function cart_confirm(){
         data:JSON.stringify({name: name, phone: phone, addr: addr, cart: JSON.stringify(shop_cart), income: total}),
         success: function(response) {
             console.log(response);
+            if(response.success){
+                alert("訂單成立，感謝您的購物！");
+                deleteCookie("shop_cart");
+                window.location.href = "index.html";
+            } else {
+                alert(response.message);
+                window.location.href = "index.html";
+            }
         },
         error: function(jqXHR) {
             alert("系統錯誤，代碼"+jqXHR.status+"\n");
