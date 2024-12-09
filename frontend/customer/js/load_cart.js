@@ -175,6 +175,11 @@ function cart_confirm(){
         data:JSON.stringify({name: name, phone: phone, addr: addr, cart: JSON.stringify(shop_cart), income: total}),
         success: function(response) {
             console.log(response);
+            if(response.success){
+                alert("訂單成立，感謝您的購物！");
+                deleteCookie("shop_cart");
+                window.location.href = "index.html";
+            }
         },
         error: function(jqXHR) {
             alert("系統錯誤，代碼"+jqXHR.status+"\n");

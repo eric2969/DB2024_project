@@ -14,7 +14,7 @@ function snd_comp(){
         contentType: 'application/json; charset=utf-8',
         success: function(response) {
             // console.log(response);
-            alert("登出成功");
+            alert("傳送成功");
             window.location.href = 'index.html';
         },
         error: function(jqXHR){
