@@ -3,6 +3,17 @@ header('Content-Type: application/json');
 
 session_start();
 
+$output = shell_exec('php remember.php');
+// 將 JSON 字串轉換為 PHP 對象
+$dataObject = json_decode($output);
+$member = "";
+if($dataObject['success']){
+    $member = $dataObject['username'];
+} else {
+    echo json_encode(['success' => false, 'message' => "SQL file format error"]);
+    die("SQL file format error");
+}
+
 $file_path = '../credentials.txt';
 
 // 確認檔案存在且可讀取
@@ -35,26 +46,25 @@ $con->query("SET NAMES 'utf8'");
 
 $input = json_decode(file_get_contents('php://input'), true);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($input['password'])) {
-    $username = $input['username'];
-    $password = $input['password'];
-    $remember = isset($input['remember']) ? $input['remember'] : false;
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['start_time']) && isset($input['end_time'])) {
+    $start_time = $input['start_time'];
+    $end_time = $input['end_time'];
 
-    $query = "SELECT `Mem_pass`, `MemID` FROM member WHERE Mem_email = ? ";
+    $query = "SELECT `OrdID`, `Way_to_pay`, `create_time`, `income`, `iscancel` FROM orders WHERE CusID = ? AND create_time BETWEEN ? AND ? ORDER BY create_time";
     $stmt = $con->prepare($query);
-    $MemID = "";
-    $stmt->bind_param("s", $username);
+    $stmt->bind_param("sss", $member, $start_time, $end_time);
     $stmt->execute();
-    $stmt->store_result();
-    $stmt->bind_result($hashed_password, $MemID);
-    $stmt->fetch();
 
-    if ($stmt->num_rows > 0 && password_verify($password, $hashed_password)) {
-        $_SESSION['member'] = $MemID;
-        setcookie('member', $MemID, time() + (300), "/"); // 5min
-        echo json_encode(['success' => true, 'message' => '登入成功']);
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $orders = [];
+        while ($row = $result->fetch_assoc()) {
+            $orders[] = $row;
+        }
+        echo json_encode(['success' => true, 'data' => $orders]);
     } else {
-        echo json_encode(['success' => false, 'message' => '用戶名或密碼錯誤']);
+        echo json_encode(['success' => false, 'message' => '沒有找到任何訂位資訊']);
     }
     $stmt->close();
 } else {

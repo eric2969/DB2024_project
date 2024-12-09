@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.reflowhq.com/v2/toolkit.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/cookie.js"></script>
+    <script type="text/javascript" src="js/member_loginsys.js"></script>
+    <script type="text/javascript" src="js/load_cart.js"></script>
 </head>
 
 <body>
@@ -22,7 +26,7 @@
                     <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="products.html">Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="Complant.html">Complaint</a></li>
-                </ul><a href="shopping-cart.html" style="width: 40px;height: 40px;background: url(&quot;assets/img/clipboard-image.png&quot;) center / contain no-repeat;"></a><a class="btn btn-primary shadow" role="button" href="login.html" style="padding: 9.6px 9.6px;width: 100px;margin: 10px;">Sign in</a><a class="btn btn-primary" role="button" style="width: 100px;padding: 9.6px 9.6px;margin: 10px;" data-bs-target="index.html" href="signup.html">Register</a>
+                </ul><a href="shopping-cart.html" style="width: 40px;height: 40px;background: url(&quot;assets/img/clipboard-image.png&quot;) center / contain no-repeat;"></a><a class="btn btn-primary shadow login_btn" role="button" style="padding: 9.6px 9.6px;width: 100px;margin: 10px; display:none;" onclick="member_logout();">Log Out</a><a class="btn btn-primary shadow login_btn" role="button" href="order_detail.html" style="padding: 9.6px 9.6px;width: 100px;margin: 10px; display:none;">My Order</a><a class="btn btn-primary shadow logout_btn" role="button" href="login.html" style="padding: 9.6px 9.6px;width: 100px;margin: 10px;">Sign in</a><a class="btn btn-primary logout_btn" role="button" style="width: 100px;padding: 9.6px 9.6px;margin: 10px;" data-bs-target="index.html" href="signup.html">Sign Up</a>
             </div>
         </div>
     </nav>
@@ -30,7 +34,65 @@
         <div class="container py-5">
             <div class="row mx-auto">
                 <div class="col">
-                    <div data-reflow-type="shopping-cart"></div>
+                    <div>
+                        <div class="reflow-shopping-cart" style="display: block;">
+                            <div class="ref-cart" style="display: block;">
+                                <div class="ref-heading">Shopping Cart</div>
+                                <div class="ref-th">
+                                    <div class="ref-product-col">Product</div>
+                                    <div class="ref-price-col">Price</div>
+                                    <div class="ref-quantity-col">Quantity</div>
+                                    <div class="ref-total-col">Total</div>
+                                </div>
+                                <div class="ref-cart-table" id="cart_data">
+                                    
+                                </div>
+                                <div class="ref-footer">
+                                    <div class="ref-links"><a href="#">Terms &amp; Conditions</a><a href="#">Privacy Policy</a><a href="#">Refund Policy</a></div>
+                                    <div class="ref-totals">
+                                        <div class="ref-subtotal" id="cart_subtotal">Subtotal: $</div>
+                                        <form class="ref-accept-terms" style="display: block;"><label><input id="ref-terms-agreement" type="checkbox" data-state-src="accept-terms" required /><span class="ref-terms-agreement-text"><span>I agree to the </span><a href="https://google.com">Terms &amp; Conditions</a><span>, </span><a href="https://google.com">Privacy Policy</a><span> and </span><a href="https://google.com">Refund Policy</a></span></label></form>
+                                        <div class="ref-row ref-checkout-buttons">
+                                            <div class="ref-button ref-standard-checkout-button">Checkout</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ref-checkout" style="display: block;">
+                                <div>
+                                    <form class="ref-details">
+                                        <div class="ref-back">← Back to Cart</div>
+                                        <div class="ref-heading">Customer Details</div>
+                                        <label><span>Email</span><input id="ref-field-email" class="ref-form-control" type="email" name="email" value required data-state-src="email" placeholder="email"/>
+                                            <div class="ref-validation-error"></div>
+                                        </label><label class="ref-phone-input"><span>Phone</span><input id="ref-field-phone" class="ref-form-control" type="tel" name="phone" value pattern="[0-9\+\- ]{5,30}" placeholder="+1234567890" required data-state-src="phone" />
+                                            <div class="ref-validation-error"></div>
+                                        </label><label class="ref-customer-name-input"><span>Name</span><input class="ref-form-control" type="text" name="customer-name" value data-state-src="customer-name" placeholder="name" required />
+                                            <div class="ref-validation-error"></div>
+                                        </label>
+                                        <hr />
+                                    </form>
+                                </div>
+                                <div>
+                                    <div class="ref-heading">Order Summary</div>
+                                    <hr />
+                                    <div class="ref-totals">
+                                        <div class="ref-subtotal">
+                                            <div class="ref-row"><span>Subtotal</span><span></span></div>
+                                        </div>
+                                        <div class="ref-shipping">
+                                            <div class="ref-row"><span>Shipping</span><span></span></div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="ref-total">
+                                        <div class="ref-row"><span>Total</span><span></span></div>
+                                        <div class="ref-total-note"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

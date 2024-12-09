@@ -4,7 +4,6 @@ function member_signup(){
     var bdate = $('#sign_date').val();
     var mail = $('#sign_email').val();
     var password = $('#sign_password').val();
-    // alert(username) ;
     if(username == "" || password == "" || bdate == "" || mail == ""){
         alert("Please fill in all fields.");
         return;
@@ -36,8 +35,6 @@ function member_login() {
         alert("Please fill in all fields.");
         return;
     }
-    console.log(username, password);
-    //var remember = $('#remember').is(':checked');
     $.ajax({
         url: 'http://localhost/backend/mem/member_login.php',
         type: 'POST',
@@ -56,7 +53,54 @@ function member_login() {
     });
 }
 
+function member_logout() {
+    $.ajax({
+        url: 'http://localhost/backend/mem/logout.php',
+        type: 'POST',
+        dataType: 'json',
+        data: JSON.stringify({}),
+        contentType: 'application/json; charset=utf-8',
+        success: function(response) {
+            alert(response.message);
+            window.location.reload();
+        },
+        error: function(jqXHR){
+            console.log(jqXHR.responseText);
+        }
+    });
+}
+
+function chk_login(){
+    $.ajax({
+        url: 'http://localhost/backend/mem/check_login.php',
+        type: 'POST',
+        dataType: 'json',
+        success: function(response) {
+            return response.logged_in;
+        },
+        error: function(jqXHR) {
+            console.log(jqXHR);
+        }
+    });
+}
 $(document).ready(function() {
     var objDate = new Date();
     $('#sign_date').attr('max', objDate.toISOString().split('T')[0]);
+    $.ajax({
+        url: 'http://localhost/backend/mem/check_login.php',
+        type: 'POST',
+        dataType: 'json',
+        success: function(response) {
+            if (response.logged_in) {
+                $(".login_btn").css('display', 'block');
+                $(".logout_btn").css('display', 'none');
+            } else {
+                $(".login_btn").css('display', 'none');
+                $(".logout_btn").css('display', 'block');
+            }
+        },
+        error: function(jqXHR) {
+            console.log(jqXHR);
+        }
+    });
 });

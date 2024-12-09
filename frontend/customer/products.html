@@ -4,11 +4,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Products - 你說的對</title>
-    <meta name="description" content="原神是一款由米哈遊獨立開發的RPG遊戲">
+    <title>Products</title>
+    <meta name="description" content="get all the products">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.reflowhq.com/v2/toolkit.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/member_loginsys.js"></script> 
+    <script type="text/javascript" src="js/get_products.js"></script>"
 </head>
 
 <body>
@@ -22,7 +25,7 @@
                     <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
                     <li class="nav-item"><a class="nav-link active" href="products.html">Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="Complant.html">Complaint</a></li>
-                </ul><a href="shopping-cart.html" style="width: 40px;height: 40px;background: url(&quot;assets/img/clipboard-image.png&quot;) center / contain no-repeat;"></a><a class="btn btn-primary shadow" role="button" href="login.html" style="padding: 9.6px 9.6px;width: 100px;margin: 10px;">Sign in</a><a class="btn btn-primary" role="button" style="width: 100px;padding: 9.6px 9.6px;margin: 10px;" data-bs-target="index.html" href="signup.html">Register</a>
+                </ul><a href="shopping-cart.html" style="width: 40px;height: 40px;background: url(&quot;assets/img/clipboard-image.png&quot;) center / contain no-repeat;"></a><a class="btn btn-primary shadow login_btn" role="button" style="padding: 9.6px 9.6px;width: 100px;margin: 10px; display:none;" onclick="member_logout();">Log Out</a><a class="btn btn-primary shadow login_btn" role="button" href="order_detail.html" style="padding: 9.6px 9.6px;width: 100px;margin: 10px; display:none;">My Order</a><a class="btn btn-primary shadow logout_btn" role="button" href="login.html" style="padding: 9.6px 9.6px;width: 100px;margin: 10px;">Sign in</a><a class="btn btn-primary logout_btn" role="button" style="width: 100px;padding: 9.6px 9.6px;margin: 10px;" data-bs-target="index.html" href="signup.html">Sign Up</a>
             </div>
         </div>
     </nav>
@@ -34,11 +37,7 @@
                     <p class="text-muted">No matter the project, our team can handle it.&nbsp;</p>
                 </div>
             </div>
-            <div class="row mx-auto">
-                <div class="col">
-                    <div data-reflow-type="product-list" data-reflow-layout="cards" data-reflow-order="date_desc" data-reflow-product-link="/product.html?product={id}"></div>
-                </div>
-            </div>
+            <div class="row mx-auto"></div>
         </div>
     </section>
     <footer class="bg-primary-gradient">
