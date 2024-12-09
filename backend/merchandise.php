@@ -35,7 +35,7 @@ $con->query("SET NAMES 'utf8'");
 $input = json_decode(file_get_contents('php://input'), true);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($input['mail']) && isset($input['bdate']) && isset($input['password'] )) {
-    $query = "SELECT `MerID`, `Mer_name`, `Retail_price` FROM Merchandise ";
+    $query = "SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_img` FROM Merchandise ";
     $stmt = $con->prepare($query);
     $stmt->execute();
     // $stmt->store_result();
@@ -44,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($
     if ($result->num_rows > 0) {
         $goods = [];
         while ($row = $result->fetch_assoc()) {
+            $row['image'] = getImageBase64('path/to/your/image.jpg'); // Add image data
             $goods[] = $row;
         }
         echo json_encode(['success' => true, 'data' => $goods]);
@@ -56,4 +57,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($
 }
 
 $con->close();
+
+function getImageBase64($filePath) {
+    if (file_exists($filePath)) {
+        $imageData = file_get_contents($filePath);
+        return 'data:image/' . pathinfo($filePath, PATHINFO_EXTENSION) . ';base64,' . base64_encode($imageData);
+    }
+    return '';
+}
 ?>
