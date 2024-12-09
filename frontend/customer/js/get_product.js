@@ -35,16 +35,15 @@ function loadProducts() {
                                         <div class="reflow-add-to-cart ref-product-controls" style="bottom:5px;">
                                                 <div class="ref-quantity-widget">
                                                     <div class="ref-decrease" onclick="dec();" ><span></span></div>
-                                                        <input id="amount" type="number" value=1 min=1 max=9/>
+                                                        <input id="shop_amount" type="number" value=1 min=1 max=9/>
                                                     <div class="ref-increase" onclick="inc();"><span></span></div>
                                                 </div>
-                                            <a class="ref-button" href="#">Add to Cart</a>
+                                            <input type="submit" class="btn btn-primary shadow ref-button" value="Add to Cart" onclick="addCart(${product.MerID});">
                                         </div>
                                     </span>
                                 </div>
                             </div>
                         </div>
-                            
                         `;
                         // 插入商品卡片到容器
                         productContainer.appendChild(productCard);
@@ -61,15 +60,15 @@ function loadProducts() {
 }
 
 function dec() {
-    var input = parseInt($('#amount').val());
+    var input = parseInt($('#shop_amount').val());
     input = Math.max(1, input - 1);
-    $("#amount").val(input);
+    $("#shop_amount").val(input);
 }
 
 function inc() {
-    var input = parseInt($('#amount').val());
+    var input = parseInt($('#shop_amount').val());
     input = Math.min(9, input + 1);
-    $("#amount").val(input);
+    $("#shop_amount").val(input);
 }
 
 $(document).ready(function() {
