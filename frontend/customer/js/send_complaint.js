@@ -13,9 +13,8 @@ function snd_comp(){
         data: JSON.stringify({ name: username, mail: mail, msg: msg}),
         contentType: 'application/json; charset=utf-8',
         success: function(response) {
-            // console.log(response);
-            alert("登出成功");
-            window.location.href = 'index.html';
+            $("#sent_msg").css('display', 'block');
+            $("#comp_form").css('display', 'none');
         },
         error: function(jqXHR){
             // console.log(jqXHR.responseText);

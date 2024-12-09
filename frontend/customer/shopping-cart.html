@@ -34,9 +34,9 @@
         <div class="container py-5">
             <div class="row mx-auto">
                 <div class="col">
-                    <div>
-                        <div class="reflow-shopping-cart" style="display: block;">
-                            <div id="cart_prod" class="ref-cart" style="display: block;">
+                    <h1 id="empty_cart" class="fw-bold text-center" style="padding-top: 8rem;">Your shopping cart is empty!</h1>
+                        <div id="shop_cart" class="reflow-shopping-cart" style="display: block;">
+                            <div id="cart_prod" class="ref-cart">
                                 <div class="ref-heading">Shopping Cart</div>
                                 <div class="ref-th">
                                     <div class="ref-product-col">Product</div>
@@ -45,7 +45,7 @@
                                     <div class="ref-total-col">Total</div>
                                 </div>
                                 <div class="ref-cart-table" id="cart_data">
-                                    
+                                    <!-- gen by js -->
                                 </div>
                                 <div class="ref-footer">
                                     <div class="ref-links"><a href="#">Terms &amp; Conditions</a><a href="#">Privacy Policy</a><a href="#">Refund Policy</a></div>
@@ -58,16 +58,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="cart_checkout" class="ref-checkout" style="display: block;">
+                            <div id="cart_checkout" class="ref-checkout">
                                 <div>
                                     <form class="ref-details">
                                         <div class="ref-back" onclick="back_cart();">← Back to Cart</div>
                                         <div class="ref-heading">Customer Details</div>
-                                        <label><span>Email</span><input id="ref-field-email" class="ref-form-control" type="email" name="email" value required data-state-src="email" placeholder="email"/>
+                                        <label><span>Name</span><input id="chk_name" class="ref-form-control" type="text" name="name" value required placeholder="Name"/>
                                             <div class="ref-validation-error"></div>
-                                        </label><label class="ref-phone-input"><span>Phone</span><input id="ref-field-phone" class="ref-form-control" type="tel" name="phone" value pattern="[0-9\+\- ]{5,30}" placeholder="+1234567890" required data-state-src="phone" />
+                                        </label><label class="ref-phone-input"><span>Phone</span><input id="chk_phone" class="ref-form-control" type="tel" name="phone" value pattern="[0-9\+\- ]{5,30}" placeholder="+1234567890" required data-state-src="phone" />
                                             <div class="ref-validation-error"></div>
-                                        </label><label class="ref-customer-name-input"><span>Name</span><input class="ref-form-control" type="text" name="customer-name" value data-state-src="customer-name" placeholder="name" required />
+                                        </label><label class="ref-customer-name-input"><span>Address</span><input id="chk_addr" class="ref-form-control" type="text" name="address" value placeholder="Address" required />
                                             <div class="ref-validation-error"></div>
                                         </label>
                                         <hr />
@@ -78,21 +78,20 @@
                                     <hr />
                                     <div class="ref-totals">
                                         <div class="ref-subtotal">
-                                            <div class="ref-row"><span>Subtotal</span><span></span></div>
+                                            <div class="ref-row"><span>Subtotal</span><span id="chk_subtotal">$ 0</span></div>
                                         </div>
                                         <div class="ref-shipping">
-                                            <div class="ref-row"><span>Shipping</span><span></span></div>
+                                            <div class="ref-row"><span>Shipping</span><span id="chk_shipping">$ 0</span></div>
                                         </div>
                                     </div>
                                     <hr />
                                     <div class="ref-total">
-                                        <div class="ref-row"><span>Total</span><span></span></div>
-                                        <div class="ref-total-note"></div>
+                                        <div class="ref-row"><span>Total</span><span id="chk_total">$ 0</span></div>
+                                        <div class="ref-total-note"><input class="btn shadow btn-primary" type="submit" value="Confirm" onclick="cart_confirm();"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>
