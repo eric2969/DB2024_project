@@ -3,7 +3,7 @@ header('Content-Type: application/json');
 
 session_start();
 
-$file_path = 'credentials.txt';
+$file_path = '../credentials.txt';
 
 // 確認檔案存在且可讀取
 if (file_exists($file_path) && is_readable($file_path)) {
@@ -38,7 +38,6 @@ $input = json_decode(file_get_contents('php://input'), true);
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($input['password'])) {
     $username = $input['username'];
     $password = $input['password'];
-    $remember = isset($input['remember']) ? $input['remember'] : false;
 
     $query = "SELECT `password` FROM admins WHERE `username` = ?";
     $stmt = $con->prepare($query);
@@ -50,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($
 
     if ($stmt->num_rows > 0 && password_verify($password, $hashed_password)) {
         $_SESSION['admin'] = $username;
-        setcookie('admin', $username, time() + (300), "/"); // 5min
+        setcookie('admin', $username, time() + (600), "/"); // 10min
         echo json_encode(['success' => true, 'message' => '登入成功']);
     } else {
         echo json_encode(['success' => false, 'message' => '用戶名或密碼錯誤']);

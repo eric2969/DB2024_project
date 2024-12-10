@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['name']) && isset($inpu
             $stmt->fetch();
             
             if ($stmt->num_rows > 0 && $stock >= $quan) {
-                $query = "UPDATE Merchandise SET `remain` = `remain` - ? WHERE `MerID` = ?";
+                $query = "UPDATE Merchandise SET `remain` = `remain` - ? WHERE `MerID` = ? FOR UPDATE";
                 $stmt = $con->prepare($query);
                 $stmt->bind_param("ii", $quan, $merid);
                 if (!$stmt->execute()) {

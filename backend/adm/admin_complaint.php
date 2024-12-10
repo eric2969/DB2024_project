@@ -31,36 +31,24 @@ if (!$con) {
     echo json_encode(['success' => false, 'message' => "connection with DataBase failed: " . mysqli_connect_error() . " (err: " . mysqli_connect_errno() . ")"]);
     die("connection with DataBase failed: " . mysqli_connect_error() . " (err: " . mysqli_connect_errno() . ")");
 }
+
 $con->query("SET NAMES 'utf8'");
 
-$input = json_decode(file_get_contents('php://input'), true);
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['OrdID']) && isset($input['reason'])) {
-    $OrdID = $input['OrdID'];
-    $msg = $input['reason'];
-
-    $query = "SELECT mem.`Mem_name`, mem.`Mem_email`, ods.`EmpID` FROM `member` mem JOIN `orders` ods ON mem.`MemID` = ods.`CusID` WHERE ods.`OrdID` = ?";
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['admin'])) {
+    //get comp
+    $query = "SELECT `compID`, `complainant`, `email`, `reason`, `create_time` FROM `complaint` a LEFT JOIN `admins` b ON a.`EmpID` = b.`indice` WHERE b.`username` = ? OR a.`EmpID` = -1 ORDER BY a.`create_time` DESC";
     $stmt = $con->prepare($query);
-    $stmt->bind_param("s", $OrdID);
+    $stmt->bind_param("s", $_SESSION['admin']);
     $stmt->execute();
-    $stmt->store_result();
-    $stmt->bind_result($Mem_name, $Mem_email, $EmpID);
-    $stmt->fetch();
-    if ($stmt->num_rows <= 0) {
-        echo json_encode(['success' => false, 'message' => 'Member or Order Not Found!']);
-        $stmt->close();
-        $con->close();
-        die();
-    }
-    $stmt->close();
-
-    $query = "INSERT INTO `complaint`(`complainant`, `EmpID`, `email`, `reason`) VALUES (?, ?, ?, ?)";
-    $stmt = $con->prepare($query);
-    $stmt->bind_param("ssss", $Mem_name, $EmpID, $Mem_email, $msg);
-    if ($stmt->execute()) {
-        echo json_encode(['success' => true, 'message' => '申訴傳送成功']);
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $comps = [];
+        while ($row = $result->fetch_assoc()) {
+            $comps[] = $row;
+        }
+        echo json_encode(['success' => true, 'data' => $comps]);
     } else {
-        echo json_encode(['success' => false, 'message' => '申訴傳送失敗']);
+        echo json_encode(['success' => false, 'message' => '沒有找到任何投訴資料']);
     }
     $stmt->close();
 } else {
@@ -69,3 +57,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['OrdID']) && isset($inp
 
 $con->close();
 ?>
+
