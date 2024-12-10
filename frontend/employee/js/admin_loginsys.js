@@ -30,9 +30,12 @@ function deleteCookie(name) {
 }
 //member register form
 function admin_signup(){
-    var username = $('#sign_name').val();
+    var username = $('#sign_username').val();
+    var name = $('#sign_name').val();
+    var phone = $('#sign_phone').val();
+    var bday = $('#sign_date').val();
     var password = $('#sign_password').val();
-    if(username == "" || password == ""){
+    if(username == "" || password == "" || bday == "" || name == "" || phone == ""){
         alert("Please fill in all fields.");
         return;
     }
@@ -40,7 +43,7 @@ function admin_signup(){
         url: 'http://localhost/backend/adm/admin_register.php',
         type: 'POST',
         dataType: 'json',
-        data: JSON.stringify({ username: username, password: password}),
+        data: JSON.stringify({ username: username, password: password, name: name, bday: bday, phone: phone}),
         contentType: 'application/json; charset=utf-8',
         success: function(response) {
             // console.log(response);
