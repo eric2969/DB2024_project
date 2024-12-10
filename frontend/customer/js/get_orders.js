@@ -64,7 +64,7 @@ function loadOrders() {
                             <td>${order.create_time}</td>
                             <td>${order.iscancel}</td>
                             <td><button id="more_${order.OrdID}_btn" class="btn btn-primary shadow ref-button" type="button" style="background: transparent;color: rgb(0,0,0);height: 40px;width: 100px;border-color: var(--bs-btn-bg);">...</button></td>
-                            <td><button class="btn btn-primary shadow edit-booking" data-id="${order.OrdID}" data-toggle="modal" data-target="#editBookingModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: var(--bs-btn-bg);">修改</button></td>
+                            <td><button class="btn btn-primary shadow edit-booking" data-id="${order.OrdID}" data-bs-toggle="modal" data-bs-target="#feedbackModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: var(--bs-btn-bg);">修改</button></td>
                             <td><button class="btn btn-primary shadow delete-booking" data-id="${order.OrdID}" data-toggle="modal" data-target="#deleteConfirmModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: rgb(255,0,0);">刪除</button></td>
                         </tr>
                         <tr id="more_${order.OrdID}_div" style="display: none;">
