@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['name']) && isset($inpu
         }
         $con->autocommit(TRUE);
         //select random employee
-        $query = "SELECT * FROM `employee` ORDER BY RAND() LIMIT 1";
+        $query = "SELECT `EmpID` FROM `employee` ORDER BY RAND() LIMIT 1";
         $stmt = $con->prepare($query);
         $stmt->execute();
         $stmt->store_result();
