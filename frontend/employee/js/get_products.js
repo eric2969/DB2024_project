@@ -39,3 +39,12 @@ $(document).ready(function() {
         }
     });
 });
+
+function to_prod(){
+    var pid = $("#input_id").val();
+    if(pid == ""){
+        alert("請輸入商品編號!");
+        return;
+    }
+    window.location.href = ("product.html?MerID=" + pid);
+}

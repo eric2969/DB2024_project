@@ -48,6 +48,7 @@ function loadProducts() {
                         `;
                         // 插入商品卡片到容器
                         productContainer.appendChild(productCard);
+                        $("#pid_nfound").css("display","none");
                         if(product.remain <= 0){
                             $("#prod_remain").css("color", "red");
                             $("#add_btn").css("background-color", "gray");
