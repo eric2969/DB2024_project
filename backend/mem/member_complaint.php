@@ -36,10 +36,9 @@ $con->query("SET NAMES 'utf8'");
 $input = json_decode(file_get_contents('php://input'), true);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['name']) && isset($input['mail']) && isset($input['msg'])) {
-    $query = "INSERT INTO complaint (`complainant`, `email`, `reason`, `create_time`) VALUES (?, ?, ?, ?)";
+    $query = "INSERT INTO complaint (`complainant`, `email`, `reason`) VALUES (?, ?, ?)";
     $stmt = $con->prepare($query);
-    $dtime = date("Y-m-d H:i:s");
-    $stmt->bind_param("ssss", $input['name'], $input['mail'], $input['msg'], $dtime);
+    $stmt->bind_param("sss", $input['name'], $input['mail'], $input['msg']);
 
     if ($stmt->execute()) {
         echo json_encode(['success' => true, 'message' => '傳送成功']);
