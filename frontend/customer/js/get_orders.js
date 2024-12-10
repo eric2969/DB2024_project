@@ -170,15 +170,16 @@ function send_comp(ordID) {
         $('#feedbackText').value = '';
         $.ajax({
             url: 'http://localhost/backend/mem/order_complaint.php',
-            type: 'GET',
+            type: 'POST',
             dataType: 'json',
-            data: JSON.stringify({ OrdID: ordID, reason: feedbackText}),
+            data: JSON.stringify({OrdID: ordID, reason: feedbackText}),
             success: function(response) {
                 if (response.success) {
                     alert('感謝您的意見！我們已收到您的回饋。');
                     $('#feedbackModal').modal('toggle')
                 } else {
-                    alert('無法加載訂單數據');
+                    console.log(response);
+                    alert(response.message);
                 }
             },
             error: function(jqXHR) {

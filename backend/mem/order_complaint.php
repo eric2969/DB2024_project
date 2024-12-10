@@ -34,9 +34,10 @@ if (!$con) {
 $con->query("SET NAMES 'utf8'");
 
 $input = json_decode(file_get_contents('php://input'), true);
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['OrdID']) && isset($input['reason'])) {
     $OrdID = $input['OrdID'];
-    $mag = $input['reason'];
+    $msg = $input['reason'];
     $query = "SELECT `CusID`, `EmpID` FROM orders WHERE `OrdID` = ?";
     $stmt = $con->prepare($query);
     $stmt->bind_param("s", $OrdID);
