@@ -16,7 +16,8 @@ function loadProducts(id){
                             <td>${product.MerID}
                             <td>${product.Name}</td>
                             <td>${product.Quantity}</td>
-                            <td>$${product.Price}</td>
+                            <td>$ ${product.Price}</td>
+                            <td>$ ${product.Price * product.Quantity}</td>
                             <td>
                                 <button class="btn btn-primary" type="button" onclick="window.open('product.html?MerID=${product.MerID}', '_blank')" style="background: transparent; color: blue; border: 1px solid blue;">
                                     詳細資訊
@@ -64,8 +65,8 @@ function loadOrders() {
                             <td>${order.create_time}</td>
                             <td>${status[order.status]}</td>
                             <td><button id="more_${order.OrdID}_btn" class="btn btn-primary shadow ref-button" type="button" style="background: transparent;color: rgb(0,0,0);height: 40px;width: 100px;border-color: var(--bs-btn-bg);">...</button></td>
-                            <td><button class="btn btn-primary shadow send_comp" data-emp=${order.EmpID} data-id="${order.OrdID}" data-bs-toggle="modal" data-bs-target="#feedbackModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: var(--bs-btn-bg);">投訴</button></td>
-                            <td><button class="btn btn-primary shadow delete-booking" data-id="${order.OrdID}" data-bs-toggle="modal" data-bs-target="#deleteOrderModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: rgb(255,0,0);">刪除</button></td>
+                            <td><button class="btn btn-primary shadow send_comp" data-id="${order.OrdID}" data-bs-toggle="modal" data-bs-target="#feedbackModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: var(--bs-btn-bg);">投訴</button></td>
+                            <td><button class="btn btn-primary shadow delete-booking" data-id="${order.OrdID}" data-bs-toggle="modal" data-bs-target="#deleteOrderModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: rgb(255,0,0); display:${(order.status == 1 || order.status == 2)?"none":"block"};">刪除</button></td>
                         </tr>
                         <tr id="more_${order.OrdID}_div" style="display: none;">
                             <td class="card-header py-3" align="center" rowspan=1>
@@ -95,6 +96,7 @@ function loadOrders() {
                                             <th>Product Name</th>
                                             <th>Quantity</th>
                                             <th>Price</th>
+                                            <th>Total</th>
                                             <th>Details</th>
                                         </tr>
                                     </thead>
@@ -135,13 +137,11 @@ function loadOrders() {
                 });
                 $('.send_comp').on('click', function() {
                     var ordId = $(this).data('id');
-                    var empId = $(this).data('emp');
-                    send_comp(ordId,empId);
+                    send_comp(ordId);
                 });
                 $('.delete-booking').on('click', function() {
                     var ordId = $(this).data('id');
                     deleteOrder(ordId);
-                    //$('#deleteConfirmModal').data('id', ordId).modal('show');
                 });
                 $("#order_list").css("display","block");
 
@@ -157,7 +157,7 @@ function loadOrders() {
     });
 }
 
-function send_comp(ordID,empID) {
+function send_comp(ordID) {
     // 填充表單數據
     $('#submitFeedback').on('click', function () {
         const feedbackText = $('#feedbackText').val().trim();
@@ -169,10 +169,10 @@ function send_comp(ordID,empID) {
         // 清空文字方塊
         $('#feedbackText').value = '';
         $.ajax({
-            url: 'http://localhost/backend/order_complaint.php',
+            url: 'http://localhost/backend/mem/order_complaint.php',
             type: 'GET',
             dataType: 'json',
-            data: JSON.stringify({ OrdID: ordID, reason: feedbackText, EmpID: empId}),
+            data: JSON.stringify({ OrdID: ordID, reason: feedbackText}),
             success: function(response) {
                 if (response.success) {
                     alert('感謝您的意見！我們已收到您的回饋。');
@@ -195,7 +195,7 @@ function deleteOrder(ordId) {
     // 當確認刪除按鈕被點擊時，執行刪除邏輯
     $('#confirmDeleteBtn').on('click', function () {
         $.ajax({
-            url: 'http://localhost/backend/order_delete.php',
+            url: 'http://localhost/backend/mem/order_delete.php',
             type: 'POST',
             dataType: 'json',
             data: JSON.stringify({ OrdID: ordId }),
@@ -225,18 +225,5 @@ $(document).ready(function() {
     $("#start_time").attr('max',objDate.toISOString().split('T')[0]);
     $("#end_time").val(objDate.toISOString().split('T')[0]);
     $("#end_time").attr('max',objDate.toISOString().split('T')[0]);
-
-    $('#confirm-delete').on('click', function() {
-        var bookingId = $('#deleteConfirmModal').data('id');
-        deleteBooking(bookingId);
-        $('#deleteConfirmModal').modal('hide');
-    });
-
-    $('#close-delete').on('click', function() {
-        $('#deleteConfirmModal').modal('hide');
-    });
-
-    $('#close-edit').on('click', function() {
-        $('#editBookingModal').modal('hide');
-    });
+    loadOrders();
 });
