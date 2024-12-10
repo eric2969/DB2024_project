@@ -76,6 +76,14 @@ function loadOrders() {
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col">
+                                            <p>Name</p>
+                                            <p>${order.Name}</p>
+                                        </div>
+                                        <div class="col">
+                                            <p>Phone</p>
+                                            <p>${order.Phone}</p>
+                                        </div>
+                                        <div class="col">
                                             <p>Address</p>
                                             <p>${order.Address}</p>
                                         </div>
