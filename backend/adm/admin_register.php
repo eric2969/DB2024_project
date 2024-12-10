@@ -46,14 +46,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($
         echo json_encode(['success' => false, 'message' => '使用者已存在']);
         $stmt->close();
         $con->close();
-        die("User exists");
+        die();
     }
+    $stmt->close();
 
     $password = password_hash($input['password'], PASSWORD_BCRYPT);
     $query = "INSERT INTO admins (`username`, `password`) VALUES (?, ?)";
     $stmt = $con->prepare($query);
     $stmt->bind_param("ss", $input['username'], $password);
+    if(!$stmt->execute()) {
+        echo json_encode(['success' => false, 'message' => '註冊失敗']);
+        $stmt->close();
+        $con->close();
+        die();
+    }
+    $query = "SELECT `indice` FROM admins WHERE `username` = ?";
+    $stmt = $con->prepare($query);
+    $stmt->bind_param("s", $input['username']);
+    $stmt->execute();
+    $stmt->store_result();
+    $stmt->bind_result($indice);
+    $stmt->fetch();
+    $stmt->close();
 
+
+    $query = "INSERT INTO employee (`EmpID`, `Emp_name`, `Emp_bth`, `Emp_phone`, `Emp_dept`) VALUES (?, ?, ?, ?, ?)";
+    $stmt = $con->prepare($query);
+    $dept = rand(1, 4);
+    $stmt->bind_param("sssss", $indice, $input['name'], $input['bday'], $input['phone'], $dept);
     if ($stmt->execute()) {
         echo json_encode(['success' => true, 'message' => '註冊成功']);
     } else {
