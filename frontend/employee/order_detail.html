@@ -25,10 +25,52 @@
                     <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="products.html">Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="Complant.html">Complaint</a></li>
-                </ul><a href="shopping-cart.html" style="width: 40px;height: 40px;background: url(&quot;assets/img/clipboard-image.png&quot;) center / contain no-repeat;"></a><a class="btn btn-primary shadow" role="button" href="login.html" style="padding: 9.6px 9.6px;width: 100px;margin: 10px;">Sign in</a><a class="btn btn-primary" role="button" style="width: 100px;padding: 9.6px 9.6px;margin: 10px;" data-bs-target="index.html" href="signup.html">Register</a>
+                </ul><a href="shopping-cart.html" style="width: 40px;height: 40px;background: url(&quot;assets/img/clipboard-image.png&quot;) center / contain no-repeat;"></a><a class="btn btn-primary shadow login_btn" role="button" style="padding: 9.6px 9.6px;width: 100px;margin: 10px; display:none;" onclick="member_logout();">Log Out</a><a class="btn btn-primary shadow login_btn" role="button" href="order_detail.html" style="padding: 9.6px 9.6px;width: 100px;margin: 10px; display:none;">My Order</a><a class="btn btn-primary shadow logout_btn" role="button" href="login.html" style="padding: 9.6px 9.6px;width: 100px;margin: 10px;">Sign in</a><a class="btn btn-primary logout_btn" role="button" style="width: 100px;padding: 9.6px 9.6px;margin: 10px;" data-bs-target="index.html" href="signup.html">Sign Up</a>
             </div>
         </div>
     </nav>
+    <div class="modal fade" id="confirmShipmentModal" tabindex="-1" aria-labelledby="confirmShipmentModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmShipmentModalLabel">確認出貨</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>您確定要確認出貨以下訂單嗎？</p>
+            <p>訂單編號：<span id="orderIdToShip"></span></p>
+            <div class="form-group">
+              <label for="trackingNumber">物流追蹤碼</label>
+              <input type="text" id="trackingNumber" class="form-control" placeholder="請輸入物流追蹤碼">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">取消</button>
+            <button type="button" id="confirmShipBtn" class="btn btn-primary">確認出貨</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="deleteOrderModal" tabindex="-1" aria-labelledby="deleteOrderModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteOrderModalLabel">確認刪除</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>您確定要刪除此訂單嗎？此操作無法撤銷。</p>
+            <p>訂單編號：<span id="orderIdToDelete"></span></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">取消</button>
+            <button type="button" id="confirmDeleteBtn" class="btn btn-danger">刪除</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <section class="py-5">
         <div class="row d-flex justify-content-center" style="padding-top: 5rem;margin-right: 5rem;margin-left: 5rem;padding-right: 8rem;padding-left: 8rem;">
             <div class="col-md-6 col-xl-4">
@@ -47,7 +89,7 @@
         </div>
         <div class="row d-flex justify-content-center" style="margin-right: 5rem;margin-left: 5rem;padding-right: 8rem;padding-left: 8rem;">
             <div class="col-md-6 col-xl-4">
-                <div class="mb-3"><input id="start_time" class="form-control mb-3" type="date"></div>
+                <div class="mb-3 "><input id="start_time" class="form-control mb-3" type="date"></div>
             </div>
             <div class="col-md-6 col-xl-4">
                 <div class="mb-3"><input id="end_time" class="form-control mb-3" type="date"></div>
@@ -62,7 +104,7 @@
         <div class="col">
             <div data-reflow-type="user-orders">
                 <div class="reflow-user-orders">
-                    <div class="ref-auth-orders-signed" style="display: block;">
+                    <div id="order_list" class="ref-auth-orders-signed" style="display: none;">
                         <div class="ref-orders">
                             <div class="ref-orders-table" >
                                 <style>
@@ -81,12 +123,11 @@
                                         </tr>
                                     </thead>
                                     <tbody id="order-list">
+                                        
                                     </tbody>
                                 </table>
                             </div>
-                            <div id="order-tmp">
-
-                            </div>
+                            
                             <div class="ref-orders-pagination" data-reflow-type="pagination">
                                 <ul class="ref-pagination">
                                     <li class="ref-page-item" data-reflow-page="NaN"><a class="ref-page-link ref-prev-btn" href="file:///C:/Users/eric2/AppData/Local/Programs/bstudio/resources/app.asar/app/index.html?server=https%3A%2F%2Fbootstrapstudio.io&amp;version=7.0.0&amp;page=NaN">
