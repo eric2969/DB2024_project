@@ -38,30 +38,16 @@ $input = json_decode(file_get_contents('php://input'), true);
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['OrdID']) && isset($input['reason'])) {
     $OrdID = $input['OrdID'];
     $msg = $input['reason'];
-    $query = "SELECT `CusID`, `EmpID` FROM orders WHERE `OrdID` = ?";
+
+    $query = "SELECT mem.`Mem_name`, mem.`Mem_email`, ods.`EmpID` FROM `member` mem JOIN `orders` ods ON mem.`MemID` = ods.`CusID` WHERE ods.`OrdID` = ?";
     $stmt = $con->prepare($query);
     $stmt->bind_param("s", $OrdID);
     $stmt->execute();
     $stmt->store_result();
-    $stmt->bind_result($CusID, $EmpID);
+    $stmt->bind_result($Mem_name, $Mem_email, $EmpID);
     $stmt->fetch();
     if ($stmt->num_rows <= 0) {
-        echo json_encode(['success' => false, 'message' => 'Order Not Found!']);
-        $stmt->close();
-        $con->close();
-        die();
-    }
-    $stmt->close();
-
-    $query = "SELECT `Mem_name`, `Mem_email` FROM `member` WHERE `MemID` = ?";
-    $stmt = $con->prepare($query);
-    $stmt->bind_param("s", $CusID);
-    $stmt->execute();
-    $stmt->store_result();
-    $stmt->bind_result($Mem_name, $Mem_email);
-    $stmt->fetch();
-    if ($stmt->num_rows <= 0) {
-        echo json_encode(['success' => false, 'message' => 'Member Not Found!']);
+        echo json_encode(['success' => false, 'message' => 'Member or Order Not Found!']);
         $stmt->close();
         $con->close();
         die();

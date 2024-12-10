@@ -34,25 +34,11 @@ if (!$con) {
 
 $con->query("SET NAMES 'utf8'");
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_SESSION['admin'];
-    $query = "SELECT `indice` FROM `admins` WHERE username = ?";
-    $stmt = $con->prepare($query);
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $stmt->store_result();
-    $stmt->bind_result($empid);
-    $stmt->fetch();
-    if ($stmt->num_rows <= 0) {
-        echo json_encode(['success' => false, 'message' => '沒有找到該員工']);
-        $stmt->close();
-        $con->close();
-        die();
-    }
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['admin'])) {
     //get comp
-    $query = "SELECT `compID`, `complainant`, `email`, `reason`, `create_time` FROM `complaint` WHERE `EmpID` = ? OR `EmpID` = -1 ORDER BY `create_time` DESC";
+    $query = "SELECT `compID`, `complainant`, `email`, `reason`, `create_time` FROM `complaint` a LEFT JOIN `admins` b ON a.`EmpID` = b.`indice` WHERE b.`username` = ? OR a.`EmpID` = -1 ORDER BY a.`create_time` DESC";
     $stmt = $con->prepare($query);
-    $stmt->bind_param("s", $empid);
+    $stmt->bind_param("s", $_SESSION['admin']);
     $stmt->execute();
     $result = $stmt->get_result();
     if ($result->num_rows > 0) {
