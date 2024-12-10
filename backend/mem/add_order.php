@@ -37,6 +37,7 @@ $input = json_decode(file_get_contents('php://input'), true);
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['name']) && isset($input['phone']) && isset($input['addr']) && isset($input['cart']) && isset($input['income'])) {
     if(isset($_SESSION['member'])){
         $memid = $_SESSION['member'];
+
         $name = $input['name'];
         $phone = $input['phone'];
         $addr = $input['addr'];
@@ -48,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['name']) && isset($inpu
         //chk remain
         $con->autocommit(FALSE);
         foreach ($cart as $merid => $quan) {
-            $query = "SELECT `remain` FROM Merchandise WHERE `MerID` = ?";
+            $query = "SELECT `remain` FROM Merchandise WHERE `MerID` = ? FOR UPDATE";
             $stmt = $con->prepare($query);
             $stmt->bind_param("s", $merid);
             $stmt->execute();
@@ -57,8 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['name']) && isset($inpu
             $stmt->fetch();
             
             if ($stmt->num_rows > 0 && $stock >= $quan) {
-                $query = "UPDATE Merchandise SET `remain` = `remain` - ? WHERE `MerID` = ? FOR UPDATE";
+                $query = "UPDATE Merchandise SET `remain` = `remain` - ? WHERE `merID` = ?";
+
                 $stmt = $con->prepare($query);
+                
                 $stmt->bind_param("ii", $quan, $merid);
                 if (!$stmt->execute()) {
                     $rem = 0;
@@ -76,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['name']) && isset($inpu
                 $con->close();
                 die();
             }
+
         }
         if($rem){
             $con->commit();

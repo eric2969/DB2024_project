@@ -3,21 +3,13 @@ header('Content-Type: application/json');
 
 session_start();
 
-// $output = shell_exec('php remember.php');
-// // 將 JSON 字串轉換為 PHP 對象
-// $dataObject = json_decode($output);
-// $member = "";
-// if($dataObject['success']){
-//     $member = $dataObject['username'];
-// } else {
-//     echo json_encode(['success' => false, 'message' => "SQL file format error"]);
-//     die("SQL file format error");
-// }
+$member = $_SESSION['admin'];
 
 $file_path = '../credentials.txt';
 
 // 確認檔案存在且可讀取
 if (file_exists($file_path) && is_readable($file_path)) {
+
     // 讀取檔案內容
     $lines = file($file_path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     // 確認檔案至少有兩行
@@ -36,6 +28,7 @@ if (file_exists($file_path) && is_readable($file_path)) {
 }
 
 $con = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+
 // 檢查連線是否成功
 if (!$con) {
     // 顯示錯誤資訊並終止程式
@@ -47,17 +40,14 @@ $con->query("SET NAMES 'utf8'");
 
 $input = json_decode(file_get_contents('php://input'), true);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['OrdID'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['start_time']) && isset($input['end_time'])) {
 
-    //$unixTimeStamp = 1420070400;
-    //$start_time = date('Y-m-d', $unixTimeStamp);
-    //$end_time = date('Y-m-d');
-    $OrdID = $input['OrdID'];
-
-    $query = "SELECT od.MerID AS `MerID`, od.Quantity AS `Quantity`, mer.retail_price AS `Price`, mer.mer_name AS `Name` FROM order_detail AS od JOIN merchandise AS mer ON od.MerID=mer.merID WHERE OrdID = ?";
+    $start_time = $input['start_time'];
+    $end_time = $input['end_time'];
+    $query = "SELECT `CusID`, `OrdID`, `Way_to_pay`, `create_time`, `income`, `status`, `Address`, `Name`, `Phone` FROM orders JOIN admins a ON EmpID = a.indice WHERE a.username = ? AND create_time BETWEEN ? AND DATE_ADD(?, INTERVAL 2 DAY) GROUP BY EmpID ORDER BY create_time DESC";
     $stmt = $con->prepare($query);
-    
-    $stmt->bind_param("s", $OrdID);
+
+    $stmt->bind_param("sss", $member, $start_time, $end_time);
     $stmt->execute();
 
     $result = $stmt->get_result();

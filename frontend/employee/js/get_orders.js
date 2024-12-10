@@ -46,7 +46,7 @@ function loadOrders() {
     var st = String($('#start_time').val());
     var et = String($('#end_time').val());
     $.ajax({
-        url: 'http://localhost/backend/mem/member_order.php',
+        url: 'http://localhost/backend/adm/admin_order.php',
         type: 'POST',
         dataType: 'json',
         data:JSON.stringify({
@@ -64,7 +64,7 @@ function loadOrders() {
                             <td>${order.create_time}</td>
                             <td>${status[order.status]}</td>
                             <td><button id="more_${order.OrdID}_btn" class="btn btn-primary shadow ref-button" type="button" style="background: transparent;color: rgb(0,0,0);height: 40px;width: 100px;border-color: var(--bs-btn-bg);">...</button></td>
-                            <td><button class="btn btn-primary shadow send_goods" data-emp=${order.EmpID} data-id="${order.OrdID}" data-bs-toggle="modal" data-bs-target="#confirmShipmentModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: var(--bs-btn-bg);">出貨</button></td>
+                            <td><button class="btn btn-primary shadow send_goods" data-emp=${order.CusID} data-id="${order.OrdID}" data-bs-toggle="modal" data-bs-target="#confirmShipmentModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: var(--bs-btn-bg);">出貨</button></td>
                             <td><button class="btn btn-primary shadow delete-booking" data-id="${order.OrdID}" data-bs-toggle="modal" data-bs-target="#deleteOrderModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: rgb(255,0,0);">刪除</button></td>
                         </tr>
                         <tr id="more_${order.OrdID}_div" style="display: none;">
@@ -169,18 +169,18 @@ function send_goods(ordID) {
           alert('請輸入物流追蹤碼！');
           return;
         }
-
         $.ajax({
-            url: 'http://localhost/backend/order_complaint.php',
-            type: 'GET',
+            url: 'http://localhost/backend/adm/order_send.php',
+            type: 'POST',
             dataType: 'json',
             data: JSON.stringify({OrdID: ordID}),
             success: function(response) {
                 if (response.success) {
-                    alert(`訂單 ${orderId} 已出貨！物流追蹤碼：${trackingNumber}`); // 模擬出貨操作，可替換為實際 API 請求
+                    alert(`訂單 ${ordID} 已出貨！物流追蹤碼：${trackingNumber}`); // 模擬出貨操作，可替換為實際 API 請求
+                    loadOrders();
                     $('#confirmShipmentModal').modal('hide'); // 隱藏 Modal
                 } else {
-                    alert('無法加載訂單數據');
+                    alert('無法加載訂單數據: '+response.message);
                 }
             },
             error: function(jqXHR) {
@@ -196,7 +196,7 @@ function deleteOrder(ordId) {
     // 當確認刪除按鈕被點擊時，執行刪除邏輯
     $('#confirmDeleteBtn').on('click', function () {
         $.ajax({
-            url: 'http://localhost/backend/order_delete.php',
+            url: 'http://localhost/backend/mem/order_delete.php',
             type: 'POST',
             dataType: 'json',
             data: JSON.stringify({ OrdID: ordId }),
