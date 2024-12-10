@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['start_time']) && isset
     $start_time = $input['start_time'];
     $end_time = $input['end_time'];
 
-    $query = "SELECT `OrdID`, `Way_to_pay`, `create_time`, `income`, `iscancel`, `Address` FROM orders WHERE CusID = ? AND create_time BETWEEN ? AND ? ORDER BY create_time";
+    $query = "SELECT `OrdID`, `Way_to_pay`, `create_time`, `income`, `iscancel`, `Address` FROM orders WHERE CusID = ? AND create_time BETWEEN ? AND DATE_ADD(?, INTERVAL 1 DAY) ORDER BY create_time";
     $stmt = $con->prepare($query);
     $stmt->bind_param("sss", $member, $start_time, $end_time);
     $stmt->execute();
