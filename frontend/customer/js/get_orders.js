@@ -55,7 +55,6 @@ function loadOrders() {
         success: function(response) {
             if (response.success) {
                 var section_list = '';
-                var tmp = ''
                 response.data.forEach(function(order) {
 
                     var section_html = `
@@ -65,7 +64,7 @@ function loadOrders() {
                             <td>${order.create_time}</td>
                             <td>${order.iscancel}</td>
                             <td><button id="more_${order.OrdID}_btn" class="btn btn-primary shadow ref-button" type="button" style="background: transparent;color: rgb(0,0,0);height: 40px;width: 100px;border-color: var(--bs-btn-bg);">...</button></td>
-                            <td><button class="btn btn-primary shadow edit-booking" data-id="${order.OrdID}" data-toggle="modal" data-target="#editBookingModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: var(--bs-btn-bg);">修改</button></td>
+                            <td><button class="btn btn-primary shadow edit-booking" data-id="${order.OrdID}" data-bs-toggle="modal" data-bs-target="#feedbackModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: var(--bs-btn-bg);">修改</button></td>
                             <td><button class="btn btn-primary shadow delete-booking" data-id="${order.OrdID}" data-toggle="modal" data-target="#deleteConfirmModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: rgb(255,0,0);">刪除</button></td>
                         </tr>
                         <tr id="more_${order.OrdID}_div" style="display: none;">
@@ -126,7 +125,6 @@ function loadOrders() {
                 });
                 //section_list += `</tbody>`
                 $('#order-list').html(section_list);
-                $('#order-tmp').html(tmp);
                 // 動態添加的按鈕需要綁定事件
                 $('button[id^="more_"]').on('click', function() {
                     var id = $(this).attr('id').split('_')[1];
@@ -144,6 +142,8 @@ function loadOrders() {
                     alert("This is a delete button");
                     //$('#deleteConfirmModal').data('id', ordId).modal('show');
                 });
+                $(".show_order").css("display","block");
+
             } else {
                 alert(response.message);
                 $('order-list').html(response.message);
@@ -202,6 +202,12 @@ function deleteBooking(bookingId) {
 }
 $(document).ready(function() {
     let objDate = new Date();
+    $(".show_order").css("display","none");
+    if(!chk_login()){
+        alert("請登入!");
+        window.location.href = "login.html";
+    }
+
     $("#l_date").val(objDate.toISOString().split('T')[0]);
     $("#l_date").attr('min',objDate.toISOString().split('T')[0]);
     $("#edit-booking-date").val(objDate.toISOString().split('T')[0]);

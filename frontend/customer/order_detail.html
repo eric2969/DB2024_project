@@ -29,6 +29,27 @@
             </div>
         </div>
     </nav>
+    <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="feedbackModalLabel">顧客意見</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="feedbackForm">
+                  <div class="mb-3">
+                    <label for="feedbackText" class="form-label">請輸入您的意見：</label>
+                    <textarea class="form-control" id="feedbackText" rows="4" placeholder="在此輸入您的意見..."></textarea>
+                  </div>
+                  <div class="text-end">
+                    <button type="button" id="submitFeedback" class="btn btn-primary">提交意見</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+        </div>
+    </div>
     <section class="py-5">
         <div class="row d-flex justify-content-center" style="padding-top: 5rem;margin-right: 5rem;margin-left: 5rem;padding-right: 8rem;padding-left: 8rem;">
             <div class="col-md-6 col-xl-4">
@@ -47,7 +68,7 @@
         </div>
         <div class="row d-flex justify-content-center" style="margin-right: 5rem;margin-left: 5rem;padding-right: 8rem;padding-left: 8rem;">
             <div class="col-md-6 col-xl-4">
-                <div class="mb-3"><input id="start_time" class="form-control mb-3" type="date"></div>
+                <div class="mb-3 "><input id="start_time" class="form-control mb-3" type="date"></div>
             </div>
             <div class="col-md-6 col-xl-4">
                 <div class="mb-3"><input id="end_time" class="form-control mb-3" type="date"></div>
