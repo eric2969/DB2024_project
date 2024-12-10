@@ -47,7 +47,7 @@
         </div>
         <div class="row d-flex justify-content-center" style="margin-right: 5rem;margin-left: 5rem;padding-right: 8rem;padding-left: 8rem;">
             <div class="col-md-6 col-xl-4">
-                <div class="mb-3"><input id="start_time" class="form-control mb-3" type="date"></div>
+                <div class="mb-3 "><input id="start_time" class="form-control mb-3" type="date"></div>
             </div>
             <div class="col-md-6 col-xl-4">
                 <div class="mb-3"><input id="end_time" class="form-control mb-3" type="date"></div>
@@ -62,7 +62,7 @@
         <div class="col">
             <div data-reflow-type="user-orders">
                 <div class="reflow-user-orders">
-                    <div class="ref-auth-orders-guest" style="display: block;">
+                    <div id="login_prompt" class="ref-auth-orders-guest" style="display: none;">
                         <div class="ref-signin-prompt">Sign in to view your orders</div>
                         <div class="ref-auth-button" data-reflow-type="auth-button">
                             <div class="reflow-auth-button">
@@ -76,7 +76,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="ref-auth-orders-signed" style="display: block;">
+                    <div class="ref-auth-orders-signed show_order" style="display: block;">
                         <div class="ref-orders">
                             <div class="ref-orders-table" >
                                 <style>

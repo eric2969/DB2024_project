@@ -55,7 +55,6 @@ function loadOrders() {
         success: function(response) {
             if (response.success) {
                 var section_list = '';
-                var tmp = ''
                 response.data.forEach(function(order) {
 
                     var section_html = `
@@ -126,7 +125,6 @@ function loadOrders() {
                 });
                 //section_list += `</tbody>`
                 $('#order-list').html(section_list);
-                $('#order-tmp').html(tmp);
                 // 動態添加的按鈕需要綁定事件
                 $('button[id^="more_"]').on('click', function() {
                     var id = $(this).attr('id').split('_')[1];
@@ -144,6 +142,8 @@ function loadOrders() {
                     alert("This is a delete button");
                     //$('#deleteConfirmModal').data('id', ordId).modal('show');
                 });
+                $(".show_order").css("display","block");
+
             } else {
                 alert(response.message);
                 $('order-list').html(response.message);
@@ -202,6 +202,12 @@ function deleteBooking(bookingId) {
 }
 $(document).ready(function() {
     let objDate = new Date();
+    $(".show_order").css("display","none");
+    if(!chk_login()){
+        alert("請登入!");
+        window.location.href = "login.html";
+    }
+
     $("#l_date").val(objDate.toISOString().split('T')[0]);
     $("#l_date").attr('min',objDate.toISOString().split('T')[0]);
     $("#edit-booking-date").val(objDate.toISOString().split('T')[0]);
