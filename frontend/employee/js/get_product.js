@@ -34,12 +34,7 @@ function loadProducts() {
                                     <strong class="ref-price">Remain Quantity: <span id="prod_remain">${product.remain}</span></strong><br /><hr />
                                     <span data-reflow-type="add-to-cart" data-reflow-shoppingcart-url="shopping-cart.html" data-reflow-addtocart-text data-reflow-product="717978921" data-reflow-variant="199976733_s">
                                         <div class="reflow-add-to-cart ref-product-controls" style="bottom:5px;">
-                                                <div class="ref-quantity-widget">
-                                                    <div class="ref-decrease" onclick="dec();" ><span></span></div>
-                                                        <input id="shop_amount" type="number" value=1 min=1 max=9/>
-                                                    <div class="ref-increase" onclick="inc();"><span></span></div>
-                                                </div>
-                                            <input id="add_btn" type="submit" class="btn btn-primary shadow ref-button" value="Add to Cart" onclick="addCart(${product.MerID});">
+                                            <input id="add_btn" type="submit" class="btn btn-primary shadow ref-button" value="Edit" onclick="edit(${product.MerID});">
                                         </div>
                                     </span>
                                 </div>
@@ -49,14 +44,13 @@ function loadProducts() {
                         // 插入商品卡片到容器
                         productContainer.appendChild(productCard);
                         $("#pid_nfound").css("display","none");
-                        if(product.remain <= 0){
+                        if(product.remain <= 0)
                             $("#prod_remain").css("color", "red");
-                            $("#add_btn").css("background-color", "gray");
-                        } else if(product.remain <= 5){
+                        else if(product.remain <= 5)
                             $("#prod_remain").css("color", "orange");
-                        } else {
+                        else 
                             $("#prod_remain").css("color", "black");
-                        }
+                        
                     });
                 } else 
                     console.error("Unexpected response format:", response.message);
@@ -67,18 +61,6 @@ function loadProducts() {
             console.log(jqXHR);
         }
     });
-}
-
-function dec() {
-    var input = parseInt($('#shop_amount').val());
-    input = Math.max(1, input - 1);
-    $("#shop_amount").val(input);
-}
-
-function inc() {
-    var input = parseInt($('#shop_amount').val());
-    input = Math.min(99, input + 1);
-    $("#shop_amount").val(input);
 }
 
 $(document).ready(function() {

@@ -62,7 +62,7 @@ function member_logout() {
         contentType: 'application/json; charset=utf-8',
         success: function(response) {
             alert(response.message);
-            window.location.reload();
+            window.location.href = 'index.html';
         },
         error: function(jqXHR){
             console.log(jqXHR.responseText);
