@@ -134,7 +134,7 @@ function loadProducts() {
                               return;
                             }
                             $.ajax({
-                                url: 'http://localhost/backend/mem/product_update.php',
+                                url: 'http://localhost/backend/adm/product_update.php',
                                 type: 'POST',
                                 dataType: 'json',
                                 data:JSON.stringify({
