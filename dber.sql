@@ -182,7 +182,6 @@ CREATE TABLE `member` (
 --
 
 INSERT INTO `member` (`MemID`, `Mem_email`, `Mem_name`, `Mem_bth`, `Mem_phone`, `Mem_addr`, `Mem_pass`) VALUES
-<<<<<<< HEAD
 (1, 'q597pfcm@gmail.com', 'Robert Nelson', '1991-01-25', '0930555757', '1771 Elm St, Los Angeles, MI 49721', '12345'),
 (2, 'fvw6os@gmail.com', 'Walker Gonzalez', '1981-10-23', '0946412721', '6545 Pine Ct, Phoenix, IL 58939', '12345'),
 (3, 'mq6x2z@gmail.com', 'Nicholas Phillips', '1980-11-30', '0935591636', '2900 Cedar Dr, San Jose, PA 34426', '12345'),
@@ -2187,10 +2186,6 @@ INSERT INTO `member` (`MemID`, `Mem_email`, `Mem_name`, `Mem_bth`, `Mem_phone`, 
 (1998, '3naqm5@gmail.com', 'Taylor Walker', '1992-10-27', '0985156305', '808 Oak Terr, New York, NY 83660', '12345'),
 (1999, '1tkftk@gmail.com', 'Eric Allen', '1982-01-13', '0976830463', '3996 Broadway St, San Antonio, PA 16733', '12345'),
 (2000, '42fzc@gmail.com', 'Scott Nelson', '1980-10-18', '0906017511', '5078 Pine Ave, San Jose, AZ 95338', '12345');
-=======
-(11, '1234', 'Eric2565884', '2024-12-01', '', '', '$2y$10$XQHJTdJuXpwLj5s9dJISOOgIC0C7nPePWpmvywzLRYcBqzgotshV6'),
-(12, 'eric920425@gmail.com', '張晏慈', '2024-12-04', '', '', '$2y$10$CycbLDpnMhh5ZoNKZEVIae/27ng1Avcvfm5U9FoNVIR/z2DvgDRKa');
->>>>>>> 2e7e6f7feff86eea7b223597cc4f535a8a46ea17
 
 -- --------------------------------------------------------
 
@@ -2250,7 +2245,6 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`OrdID`, `CusID`, `Name`, `Phone`, `address`, `EmpID`, `create_time`, `Way_to_pay`, `income`, `iscancel`) VALUES
-<<<<<<< HEAD
 (1, 862, 'Brian Allen', '0980020914', '2089 Pine Ave, Los Angeles, AZ 48978', 15, '2024-08-01 10:00:00', 'credit card', 0, 0),
 (2, 401, 'Smith Hernandez', '0940457938', '8197 Oak Blvd, Los Angeles, OH 90071', 23, '2024-08-01 11:05:54', 'debt card', 0, 0),
 (3, 1699, 'Hall Garcia', '0943642240', '7941 Cedar Ct, Houston, NY 29627', 3, '2024-08-01 12:11:48', 'credit card', 0, 0),
@@ -4255,18 +4249,6 @@ INSERT INTO `orders` (`OrdID`, `CusID`, `Name`, `Phone`, `address`, `EmpID`, `cr
 (1998, 392, 'Martin Martinez', '0965955490', '3382 Hill Pl, Phoenix, CA 15774', 9, '2024-10-31 19:22:18', 'credit card', 0, 0),
 (1999, 973, 'White Smith', '0906375597', '5166 Oak Ave, New York, NY 37652', 10, '2024-10-31 20:28:12', 'credit card', 0, 0),
 (2000, 961, 'Jackson Scott', '0977876194', '1473 Oak Ln, New York, IL 36814', 23, '2024-10-31 21:34:06', 'transfer', 0, 0);
-=======
-(2, 0, '', '', '', 0, '2024-12-09 22:43:05', '', 0, 0),
-(3, 11, '趙子佾', '0979829311', '文山區羅斯福路五段236巷6號4樓', 0, '2024-12-09 23:33:46', '', 1270, 0),
-(4, 11, '趙子佾', '0979829311', '文山區羅斯福路五段236巷6號4樓', 0, '2024-12-09 23:35:54', '', 1970, 0),
-(5, 11, '趙子佾', '0979829311', '文山區羅斯福路五段236巷6號4樓', 0, '2024-12-09 23:37:27', '', 1970, 0),
-(6, 11, '趙子佾', '0979829311', '文山區羅斯福路五段236巷6號4樓', 0, '2024-12-09 23:42:53', 'Credit Card', 1970, 0),
-(7, 11, '趙子佾', '0979829311', '文山區羅斯福路五段236巷6號4樓', 0, '2024-12-09 23:43:13', 'Credit Card', 1970, 0),
-(8, 11, '趙子佾', '0979829311', '文山區羅斯福路五段236巷6號4樓', 0, '2024-12-09 23:45:12', 'Credit Card', 1970, 0),
-(9, 11, '趙子佾', '0979829311', '文山區羅斯福路五段236巷6號4樓', 0, '2024-12-09 23:45:45', 'Credit Card', 1970, 0),
-(10, 11, '趙子佾', '0979829311', '文山區羅斯福路五段236巷6號4樓', 0, '2024-12-09 23:48:11', 'Credit Card', 770, 0);
-
-
 -- --------------------------------------------------------
 
 --
@@ -104496,11 +104478,7 @@ ALTER TABLE `employee`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member`
 --
 ALTER TABLE `member`
-<<<<<<< HEAD
   MODIFY `MemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2001;
-=======
-  MODIFY `MemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
->>>>>>> 2e7e6f7feff86eea7b223597cc4f535a8a46ea17
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `merchandise`

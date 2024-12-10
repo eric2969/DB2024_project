@@ -9,7 +9,6 @@ function loadProducts(id){
         success: function(response) {
             if (response.success) {
                 // 處理回傳的商品資料
-                
                 response.data.forEach(function(product) {
                     subtotal += parseInt(product.Quantity)*parseInt(product.Price);
                     var product_html = `
