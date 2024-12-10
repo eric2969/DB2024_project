@@ -50,6 +50,26 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="deleteOrderModal" tabindex="-1" aria-labelledby="deleteOrderModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteOrderModalLabel">確認刪除</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>您確定要刪除此訂單嗎？此操作無法撤銷。</p>
+            <p>訂單編號：<span id="orderIdToDelete"></span></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">取消</button>
+            <button type="button" id="confirmDeleteBtn" class="btn btn-danger">刪除</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <section class="py-5">
         <div class="row d-flex justify-content-center" style="padding-top: 5rem;margin-right: 5rem;margin-left: 5rem;padding-right: 8rem;padding-left: 8rem;">
             <div class="col-md-6 col-xl-4">

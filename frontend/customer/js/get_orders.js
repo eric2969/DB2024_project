@@ -64,26 +64,27 @@ function loadOrders() {
                             <td>${order.create_time}</td>
                             <td>${status[order.status]}</td>
                             <td><button id="more_${order.OrdID}_btn" class="btn btn-primary shadow ref-button" type="button" style="background: transparent;color: rgb(0,0,0);height: 40px;width: 100px;border-color: var(--bs-btn-bg);">...</button></td>
-                            <td><button class="btn btn-primary shadow send_comp" data-id="${order.OrdID}" data-bs-toggle="modal" data-bs-target="#feedbackModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: var(--bs-btn-bg);">投訴</button></td>
-                            <td><button class="btn btn-primary shadow delete-booking" data-id="${order.OrdID}" data-toggle="modal" data-target="#deleteConfirmModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: rgb(255,0,0);">刪除</button></td>
+                            <td><button class="btn btn-primary shadow send_comp" data-emp=${order.EmpID} data-id="${order.OrdID}" data-bs-toggle="modal" data-bs-target="#feedbackModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: var(--bs-btn-bg);">投訴</button></td>
+                            <td><button class="btn btn-primary shadow delete-booking" data-id="${order.OrdID}" data-bs-toggle="modal" data-bs-target="#deleteOrderModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: rgb(255,0,0);">刪除</button></td>
                         </tr>
                         <tr id="more_${order.OrdID}_div" style="display: none;">
                             <td class="card-header py-3" align="center" rowspan=1>
                                 <p class="text-primary m-0 fw-bold">More Info</p>
                             </td>
                             <td colspan=7>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col">
-                                        <p>Address</p>
-                                        <p>${order.Address}</p>
-                                    </div>
-                                    <div class="col">
-                                        <p>Way to pay</p>
-                                        <p>${order.Way_to_pay}</p>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <p>Address</p>
+                                            <p>${order.Address}</p>
+                                        </div>
+                                        <div class="col">
+                                            <p>Way to pay</p>
+                                            <p>${order.Way_to_pay}</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div></td>
+                            </td>
                         </tr>
                         <tr id="more_${order.OrdID}_detail" style="display: none;">
                             <td colspan=7 align='justify'>
@@ -134,11 +135,12 @@ function loadOrders() {
                 });
                 $('.send_comp').on('click', function() {
                     var ordId = $(this).data('id');
-                    send_comp(ordId);
+                    var empId = $(this).data('emp');
+                    send_comp(ordId,empId);
                 });
                 $('.delete-booking').on('click', function() {
                     var ordId = $(this).data('id');
-                    alert("This is a delete button");
+                    deleteOrder(ordId);
                     //$('#deleteConfirmModal').data('id', ordId).modal('show');
                 });
                 $("#order_list").css("display","block");
@@ -155,43 +157,62 @@ function loadOrders() {
     });
 }
 
-function send_comp(ordID) {
-    // 顯示修改表單，這裡可以用模態框來顯示修改表單
-    // 假設這裡有一個模態框表單 #editBookingModal
-    $('#editBookingModal').data('id', bookingId).modal('show');
+function send_comp(ordID,empID) {
     // 填充表單數據
-
-    $.ajax({
-        url: 'http://localhost/backend/get_booking.php',
-        type: 'GET',
-        dataType: 'json',
-        data: { id: bookingId },
-        success: function(response) {
-            if (response.success) {
-            } else {
-                alert('無法加載訂單數據');
-            }
+    $('#submitFeedback').on('click', function () {
+        const feedbackText = $('#feedbackText').val().trim();
+        if (feedbackText === '') {
+            alert('請輸入您的意見！');
+            return;
         }
+        // 模擬傳送資料
+        // 清空文字方塊
+        $('#feedbackText').value = '';
+        $.ajax({
+            url: 'http://localhost/backend/order_complaint.php',
+            type: 'GET',
+            dataType: 'json',
+            data: JSON.stringify({ OrdID: ordID, reason: feedbackText, EmpID: empId}),
+            success: function(response) {
+                if (response.success) {
+                    alert('感謝您的意見！我們已收到您的回饋。');
+                    $('#feedbackModal').modal('toggle')
+                } else {
+                    alert('無法加載訂單數據');
+                }
+            },
+            error: function(jqXHR) {
+                alert("系統錯誤，代碼"+jqXHR.status+"\n");
+                console.log(jqXHR);
+            }
+        });
+    });
+    
+}
+
+function deleteOrder(ordId) {
+    $('#orderIdToDelete').text(ordId); // 顯示在 Modal 中
+    // 當確認刪除按鈕被點擊時，執行刪除邏輯
+    $('#confirmDeleteBtn').on('click', function () {
+        $.ajax({
+            url: 'http://localhost/backend/order_delete.php',
+            type: 'POST',
+            dataType: 'json',
+            data: JSON.stringify({ OrdID: ordId }),
+            contentType: 'application/json; charset=utf-8',
+            success: function(response) {
+                if (response.success) {
+                    alert(`訂單 ${ordId} 已刪除！`); // 模擬刪除操作，可替換為實際刪除 API 請求
+                    loadOrders();
+                    $('#deleteOrderModal').modal('hide'); // 隱藏 Modal
+                } else {
+                    alert('刪除失敗');
+                }
+            }
+        });
     });
 }
 
-function deleteBooking(bookingId) {
-    $.ajax({
-        url: 'http://localhost/backend/delete_booking.php',
-        type: 'POST',
-        dataType: 'json',
-        data: JSON.stringify({ id: bookingId }),
-        contentType: 'application/json; charset=utf-8',
-        success: function(response) {
-            if (response.success) {
-                alert("刪除成功");
-                loadBookings();
-            } else {
-                alert('刪除失敗');
-            }
-        }
-    });
-}
 $(document).ready(function() {
     let objDate = new Date();
     $(".show_order").css("display","none");
@@ -204,7 +225,6 @@ $(document).ready(function() {
     $("#start_time").attr('max',objDate.toISOString().split('T')[0]);
     $("#end_time").val(objDate.toISOString().split('T')[0]);
     $("#end_time").attr('max',objDate.toISOString().split('T')[0]);
-    loadOrders();
 
     $('#confirm-delete').on('click', function() {
         var bookingId = $('#deleteConfirmModal').data('id');

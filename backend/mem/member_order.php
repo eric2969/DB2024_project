@@ -40,13 +40,10 @@ $input = json_decode(file_get_contents('php://input'), true);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['start_time']) && isset($input['end_time'])) {
 
-    //$unixTimeStamp = 1420070400;
-    //$start_time = date('Y-m-d', $unixTimeStamp);
-    //$end_time = date('Y-m-d');
     $start_time = $input['start_time'];
     $end_time = $input['end_time'];
 
-    $query = "SELECT `OrdID`, `Way_to_pay`, `create_time`, `income`, `status`, `Address` FROM orders WHERE CusID = ? AND create_time BETWEEN ? AND DATE_ADD(?, INTERVAL 1 DAY) ORDER BY create_time";
+    $query = "SELECT `EmpID`, `OrdID`, `Way_to_pay`, `create_time`, `income`, `status`, `Address` FROM orders WHERE CusID = ? AND create_time BETWEEN ? AND DATE_ADD(?, INTERVAL 1 DAY) ORDER BY create_time";
     $stmt = $con->prepare($query);
     $stmt->bind_param("sss", $member, $start_time, $end_time);
     $stmt->execute();
