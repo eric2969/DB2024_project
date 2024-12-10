@@ -50,13 +50,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['name']) && isset($inpu
         foreach ($cart as $merid => $quan) {
             $query = "SELECT `remain` FROM Merchandise WHERE `MerID` = ?";
             $stmt = $con->prepare($query);
-            $stmt->bind_param("i", $merid);
+            $stmt->bind_param("s", $merid);
             $stmt->execute();
             $stmt->store_result();
             $stmt->bind_result($stock);
             $stmt->fetch();
+            
             if ($stmt->num_rows > 0 && $stock >= $quan) {
-                $query = "UPDATE Merchandise SET `remain` = `remain` -? WHERE `MerID` =?";
+                $query = "UPDATE Merchandise SET `remain` = `remain` - ? WHERE `MerID` = ?";
                 $stmt = $con->prepare($query);
                 $stmt->bind_param("ii", $quan, $merid);
                 if (!$stmt->execute()) {
@@ -85,10 +86,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['name']) && isset($inpu
             $con->close();
             die();
         }
-
-        $query = "INSERT INTO orders (`CusID`, `Name`, `Phone`, `address`, `Way_to_pay`, `income`) VALUES(?, ?, ?, ?, ?, ?)";
+        $con->autocommit(TRUE);
+        //select random employee
+        $query = "SELECT `EmpID` FROM `employee` ORDER BY RAND() LIMIT 1";
         $stmt = $con->prepare($query);
-        $stmt->bind_param("ssssss", $memid, $name, $phone, $addr, $payment, $income);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($empid);
+        $stmt->fetch();
+        if ($stmt->num_rows == 0){
+            echo json_encode(['success' => false, 'message' => 'no_employee']);
+            $stmt->close();
+            $con->close();
+            die();
+        }
+
+        $query = "INSERT INTO orders (`CusID`, `EmpID`, `Name`, `Phone`, `address`, `Way_to_pay`, `income`) VALUES(?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $con->prepare($query);
+        $stmt->bind_param("sssssss", $memid, $empid, $name, $phone, $addr, $payment, $income);
         if ($stmt->execute()) {
             $stmt->close();
         } else {

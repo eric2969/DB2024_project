@@ -3,16 +3,6 @@ header('Content-Type: application/json');
 
 session_start();
 
-// $output = shell_exec('php remember.php');
-// // 將 JSON 字串轉換為 PHP 對象
-// $dataObject = json_decode($output);
-// $member = "";
-// if($dataObject['success']){
-//     $member = $dataObject['username'];
-// } else {
-//     echo json_encode(['success' => false, 'message' => "SQL file format error"]);
-//     die("SQL file format error");
-// }
 $member = $_SESSION['member'];
 
 $file_path = '../credentials.txt';
@@ -47,18 +37,13 @@ if (!$con) {
 $con->query("SET NAMES 'utf8'");
 
 $input = json_decode(file_get_contents('php://input'), true);
-$start_time = "0";
-$end_time = "0";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['start_time']) && isset($input['end_time'])) {
 
-    //$unixTimeStamp = 1420070400;
-    //$start_time = date('Y-m-d', $unixTimeStamp);
-    //$end_time = date('Y-m-d');
     $start_time = $input['start_time'];
     $end_time = $input['end_time'];
 
-    $query = "SELECT `OrdID`, `Way_to_pay`, `create_time`, `income`, `iscancel`, `Address` FROM orders WHERE CusID = ? AND create_time BETWEEN ? AND ? ORDER BY create_time";
+    $query = "SELECT `EmpID`, `OrdID`, `Way_to_pay`, `create_time`, `income`, `status`, `Address` FROM orders WHERE CusID = ? AND create_time BETWEEN ? AND DATE_ADD(?, INTERVAL 1 DAY) ORDER BY create_time DESC";
     $stmt = $con->prepare($query);
     $stmt->bind_param("sss", $member, $start_time, $end_time);
     $stmt->execute();
@@ -76,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['start_time']) && isset
     }
     $stmt->close();
 } else {
-    echo json_encode(['success' => false, 'message' => '無效的請求'.$start_time.$end_time]);
+    echo json_encode(['success' => false, 'message' => '無效的請求']);
 }
 
 $con->close();
