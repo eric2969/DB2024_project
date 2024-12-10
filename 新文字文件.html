@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="zh-tw">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Admin - Edit Product</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="text-center">Edit Product</h1>
+        <!-- Product Card -->
+        <div class="card mx-auto" style="width: 18rem;">
+            <img id="productImage" src="assets/img/product.jpg" class="card-img-top" alt="Product Image">
+            <div class="card-body">
+                <h5 id="productName" class="card-title">Product Name</h5>
+                <p class="card-text">
+                    Stock: <span id="productStock">10</span>
+                </p>
+                <button class="btn btn-primary" id="editBtn">Edit</button>
+                <button class="btn btn-success d-none" id="saveBtn">Save</button>
+                <button class="btn btn-secondary d-none" id="cancelBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Form Fields -->
+    <div id="editFields" class="d-none">
+        <input type="file" id="editImage" class="form-control mb-2">
+        <input type="text" id="editName" class="form-control mb-2">
+        <input type="number" id="editStock" class="form-control mb-2" min="0">
+    </div>
+
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/edit_product.js"></script>
+</body>
+</html>

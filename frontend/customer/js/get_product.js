@@ -25,7 +25,7 @@ function loadProducts() {
                             <div class="reflow-product">
                                 <div class="ref-media">
                                     <div class="ref-preview">
-                                        <img class="ref-image active" data-reflow-preview-type="image" src="data:image;base64,${product.Mer_pic}" alt="${product.Mer_name}">
+                                        <img class="ref-image active" data-reflow-preview-type="image" src="${product.Mer_pic}" alt="${product.Mer_name}">
                                     </div>
                                 </div>
                                 <div class="ref-product-data">

@@ -9,6 +9,7 @@ $file_path = '../credentials.txt';
 
 // 確認檔案存在且可讀取
 if (file_exists($file_path) && is_readable($file_path)) {
+
     // 讀取檔案內容
     $lines = file($file_path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     // 確認檔案至少有兩行
@@ -27,6 +28,7 @@ if (file_exists($file_path) && is_readable($file_path)) {
 }
 
 $con = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+
 // 檢查連線是否成功
 if (!$con) {
     // 顯示錯誤資訊並終止程式
@@ -42,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['start_time']) && isset
 
     $start_time = $input['start_time'];
     $end_time = $input['end_time'];
-
+    
     $query = "SELECT `EmpID`, `OrdID`, `Way_to_pay`, `create_time`, `income`, `status`, `Address` FROM orders WHERE CusID = ? AND create_time BETWEEN ? AND DATE_ADD(?, INTERVAL 1 DAY) ORDER BY create_time DESC";
     $stmt = $con->prepare($query);
     $stmt->bind_param("sss", $member, $start_time, $end_time);

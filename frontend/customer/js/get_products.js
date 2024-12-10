@@ -18,7 +18,7 @@ $(document).ready(function() {
                         productCard.className = "col-md-4 mb-4";
                         productCard.innerHTML = `
                             <div class="card h-100 shadow-sm">
-                                <img src="data:image;base64,${product.Mer_pic}" class="card-img" alt="${product.Mer_name}">
+                                <img src="${product.Mer_pic}" class="card-img" alt="${product.Mer_name}">
                                 <div class="card-body">
                                     <h5 class="card-title">${product.Mer_name}</h5>
                                     <p class="card-text">Price: $${product.Retail_price}</p>

@@ -98,7 +98,7 @@ function LoadCart() {
                                 productCard.className = "ref-product";
                                 productCard.innerHTML = `
                                 <div class="ref-product-col">
-                                    <div class="ref-product-wrapper"><img class="ref-product-photo" src="data:image;base64,${product.Mer_pic}" alt="${product.Mer_name}"/>
+                                    <div class="ref-product-wrapper"><img class="ref-product-photo" src="${product.Mer_pic}" alt="${product.Mer_name}"/>
                                         <div class="ref-product-data">
                                             <div class="ref-product-info">
                                                 <div>
