@@ -3,7 +3,7 @@ header('Content-Type: application/json');
 
 session_start();
 
-$member = $_SESSION['admin'];
+$member = $_COOKIE['admin'];
 
 $file_path = '../credentials.txt';
 
@@ -41,10 +41,9 @@ $con->query("SET NAMES 'utf8'");
 $input = json_decode(file_get_contents('php://input'), true);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['start_time']) && isset($input['end_time'])) {
-
     $start_time = $input['start_time'];
     $end_time = $input['end_time'];
-    $query = "SELECT `CusID`, `OrdID`, `Way_to_pay`, `create_time`, `income`, `status`, `Address`, `Name`, `Phone` FROM orders JOIN admins a ON EmpID = a.indice WHERE a.username = ? AND create_time BETWEEN ? AND DATE_ADD(?, INTERVAL 2 DAY) GROUP BY EmpID ORDER BY create_time DESC";
+    $query = "SELECT `CusID`, `OrdID`, `Way_to_pay`, `create_time`, `income`, `status`, `Address`, `Name`, `Phone` FROM orders JOIN admins a ON EmpID = a.indice WHERE a.username = ? AND create_time BETWEEN DATE_SUB(?, INTERVAL 1 DAY) AND DATE_ADD(?, INTERVAL 1 DAY) ORDER BY create_time DESC";
     $stmt = $con->prepare($query);
 
     $stmt->bind_param("sss", $member, $start_time, $end_time);

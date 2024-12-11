@@ -54,7 +54,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         $stmt->close();
     } else {
-        $query = "SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_pic`, `remain` FROM Merchandise ";
+        if(isset($input['name'])){
+            $query = 'SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_pic`, `remain` FROM `merchandise` WHERE `mer_name` REGEXP '.'"'.$input['name'].'"';
+        } else {
+            $query = "SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_pic`, `remain` FROM Merchandise ORDER BY RAND() LIMIT 15";
+        }
         $stmt = $con->prepare($query);
         $stmt->execute();
         // $stmt->store_result();

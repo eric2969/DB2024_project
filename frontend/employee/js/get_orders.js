@@ -16,7 +16,8 @@ function loadProducts(id){
                             <td>${product.MerID}
                             <td>${product.Name}</td>
                             <td>${product.Quantity}</td>
-                            <td>$${product.Price}</td>
+                            <td>$ ${product.Price}</td>
+                            <td>$ ${product.Price * product.Quantity}</td>
                             <td>
                                 <button class="btn btn-primary" type="button" onclick="window.open('product.html?MerID=${product.MerID}', '_blank')" style="background: transparent; color: blue; border: 1px solid blue;">
                                     詳細資訊
@@ -95,6 +96,7 @@ function loadOrders() {
                                             <th>Product Name</th>
                                             <th>Quantity</th>
                                             <th>Price</th>
+                                            <th>Total</th>
                                             <th>Details</th>
                                         </tr>
                                     </thead>
