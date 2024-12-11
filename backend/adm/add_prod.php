@@ -31,26 +31,39 @@ if (!$con) {
     echo json_encode(['success' => false, 'message' => "connection with DataBase failed: " . mysqli_connect_error() . " (err: " . mysqli_connect_errno() . ")"]);
     die("connection with DataBase failed: " . mysqli_connect_error() . " (err: " . mysqli_connect_errno() . ")");
 }
+
 $con->query("SET NAMES 'utf8'");
 
 $input = json_decode(file_get_contents('php://input'), true);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['merID']) && isset($input['mer_name']) && isset($input['retail_price']) && isset($input['remain']) && isset($input['mer_pic']) && isset($input['st'])) {
-    $id = $input['merID'];
-    $name = $input['mer_name'];
-    $price = $input['retail_price'];
-    $stock = $input['remain'];
-    $pic = $input['mer_pic'];
-    $dt = $input['st'];
-    $query = "UPDATE Merchandise SET mer_name=?,retail_price=?,remain=?,mer_pic=?,`start_date`=? WHERE `merID` = ?";
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['name']) && isset($input['price']) && isset($input['remain']) && isset($input['pic']) && isset($input['st'])) {
+    //get comp
+    $query = "INSERT INTO Merchandise (`mer_name`, `retail_price`, `remain`, `mer_pic`, `start_date`) VALUES(?, ?, ?, ?, ?)";
     $stmt = $con->prepare($query);
-    $stmt->bind_param("ssssss", $name, $price, $stock, $pic, $dt, $id);
-    $stmt->execute();
-    if ($stmt->execute()) {
-        echo json_encode(['success' => true, 'message' => '商品更新成功']);
+    $stmt->bind_param("sssss", $input['name'], $input['price'], $input['remain'], $input['pic'], $input['st']);
+    if (!$stmt->execute()) {
+        echo json_encode(['success' => false, 'message' => '商品新增失敗!']);
+        $stmt->close();
+        $con->close();
+        die();
     }
-    else{
-        echo json_encode(['success' => false, 'message' => 'Order Not Found!']);
+
+    $query = "SELECT LAST_INSERT_ID()";
+    $stmt = $con->prepare($query);
+    $stmt->execute();
+    $stmt->store_result();
+    $stmt->bind_result($MerID);
+    $stmt->fetch();
+    if ($stmt->num_rows > 0) {
+        $stmt->close();
+        echo json_encode(['success' => true, 'message' => '商品新增成功', 'id' => $MerID]);
+        $con->close();
+        die();
+    } else {
+        echo json_encode(['success' => false, 'message' => '系統錯誤']);
+        $stmt->close();
+        $con->close();
+        die();
     }
     $stmt->close();
 } else {
@@ -59,3 +72,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['merID']) && isset($inp
 
 $con->close();
 ?>
+

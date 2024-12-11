@@ -11,6 +11,8 @@ function inc() {
 }
 
 function loadProducts() {
+    var date = new Date(); // Or the date you'd like converted.
+    var TD = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
     let params = new URLSearchParams(window.location.search);
     if(!params.has('MerID')){
         alert("無效的操作");
@@ -51,11 +53,17 @@ function loadProducts() {
                               <h1 class="ref-name fw-bold product-name">${product.Mer_name}</h1>
                               <!-- 名稱編輯（編輯模式） -->
                               <input type="text" id="productNameEditor_${product.MerID}" class="form-control name-editor d-none" value="${product.Mer_name}" placeholder="請輸入商品名稱">
-
+                              <br />
                               <!-- 價格顯示 -->
                               <strong class="ref-price ref-on-sale product-price">$${product.Retail_price}</strong>
                               <input type="number" id="productPriceEditor_${product.MerID}" class="form-control price-editor d-none" min="0" value="${product.Retail_price}" placeholder="請輸入商品價格">
-                              
+                              <br />
+                              <!-- 販售日期 -->
+                              <strong class="ref-price">Starting Date: <span class="product-date" style='color:${(product.start_date<=TD)?"black":"red"};'>${product.start_date}</span>
+                              <!-- 販售日期(編輯模式) -->
+                                  <input type="Date" id="productDateEditor_${product.MerID}" class="form-control price-editor d-none" value=${product.start_date}>
+                              </strong>
+                              <br/>
                               <!-- 庫存數量顯示 -->
                               <strong class="ref-price">Remain Quantity: <span class="product-remain">${product.remain}</span>
                               <!-- 庫存數量編輯（編輯模式） -->
@@ -65,7 +73,6 @@ function loadProducts() {
                                   <div class="ref-increase" onclick="inc();"><span></span></div>
                               </div>
                               </strong>
-                              <input type="number" class="form-control stock-editor d-none" min="0" value="${product.remain}">
 
                               <hr />
                               <!-- 按鈕切換 -->
@@ -95,12 +102,13 @@ function loadProducts() {
                             $(`#productNameEditor_${productId}`).removeClass('d-none');
                             $(`#productStockEditor_${productId}`).removeClass('d-none');
                             $(`#productPriceEditor_${productId}`).removeClass('d-none');
+                            $(`#productDateEditor_${productId}`).removeClass('d-none');
                             $('#previewImage').removeClass('d-none');
                             $(`.action-buttons[data-id="${productId}"]`).removeClass('d-none');
 
                             // 隱藏顯示模式的元件
                             $(this).addClass('d-none'); // 隱藏 Edit 按鈕
-                            $(`.product-image, .product-price, .product-name, .product-remain`).addClass('d-none');
+                            $(`.product-image, .product-price, .product-name, .product-remain, .product-date`).addClass('d-none');
                           });
 
                           // 點擊 Cancel 按鈕取消編輯
@@ -112,12 +120,13 @@ function loadProducts() {
                             $(`#productNameEditor_${productId}`).addClass('d-none');
                             $(`#productStockEditor_${productId}`).addClass('d-none');
                             $(`#productPriceEditor_${productId}`).addClass('d-none');
+                            $(`#productDateEditor_${productId}`).addClass('d-none');
                             $('#previewImage').addClass('d-none');
                             $(`.action-buttons[data-id="${productId}"]`).addClass('d-none');
 
                             // 顯示顯示模式的元件
                             $(`.edit-btn[data-id="${productId}"]`).removeClass('d-none');
-                            $(`.product-image, .product-name, .product-remain, .product-price`).removeClass('d-none');
+                            $(`.product-image, .product-name, .product-remain, .product-price, product-date`).removeClass('d-none');
                           });
 
                           // 點擊 Save 按鈕保存修改
@@ -129,7 +138,8 @@ function loadProducts() {
                             const updatedName = $(`#productNameEditor_${productId}`).val();
                             const updatedStock = $(`#shop_amount`).val();
                             const updatedPrice = $(`#productPriceEditor_${productId}`).val();
-                            if (updatedName === '' || updatedStock === '' || updatedPrice === '') {
+                            const start_dt = $(`#productDateEditor_${productId}`).val();
+                            if (updatedName === '' || updatedStock === '' || updatedPrice === '' || start_dt === '') {
                               alert('請填寫完整資訊！');
                               return;
                             }
@@ -142,18 +152,14 @@ function loadProducts() {
                                     mer_name: updatedName,
                                     retail_price: updatedPrice,
                                     remain: updatedStock,
-                                    mer_pic: updatedImage
+                                    mer_pic: updatedImage,
+                                    st: start_dt
                                 }),
                                 success: function(response) {
                                     if (response.success) {
                                         // 模擬保存邏輯，可改為 API 請求
-                                        alert(`產品 ${productId} 已更新！\n價格：${updatedPrice}\n名稱：${updatedName}\n庫存：${updatedStock}`);
-                                        $(`.product-image`).attr("src",updatedImage);
-                                        $(`.product-name`).text(updatedName);
-                                        $(`.product-remain`).text(updatedStock);
-                                        $(`.product-price`).text("$" + updatedPrice);
-                                        // 恢復至顯示模式
-                                        $(`.cancel-btn[data-id="${productId}"]`).click();
+                                        alert(`產品 ${productId} 已更新！\n價格：${updatedPrice}\n名稱：${updatedName}\n庫存：${updatedStock}\n開始販售日期：${start_dt}`);
+                                        window.location.reload();
                                     }
                                     else{
                                         alert("系統錯誤"+response.message);

@@ -217,17 +217,15 @@ function deleteOrder(ordId) {
 }
 
 $(document).ready(function() {
-    let objDate = new Date();
+    var date = new Date(); // Or the date you'd like converted.
+    var DateTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
     $(".show_order").css("display","none");
-    if(!chk_login()){
-        alert("請登入!");
-        window.location.href = "login.html";
-    }
     //訂單日期設定
-    $("#start_time").val(objDate.toISOString().split('T')[0]);
-    $("#start_time").attr('max',objDate.toISOString().split('T')[0]);
-    $("#end_time").val(objDate.toISOString().split('T')[0]);
-    $("#end_time").attr('max',objDate.toISOString().split('T')[0]);
+    $("#start_time").val(DateTime);
+    $("#start_time").attr('max',DateTime);
+    $("#end_time").val(DateTime);
+    $("#end_time").attr('max',DateTime);
+    loadOrders();
 
     $('#confirm-delete').on('click', function() {
         var bookingId = $('#deleteConfirmModal').data('id');

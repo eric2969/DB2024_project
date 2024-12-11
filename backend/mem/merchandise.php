@@ -36,7 +36,7 @@ $input = json_decode(file_get_contents('php://input'), true);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if($input['single']){
-        $query = "SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_pic`, `remain` FROM Merchandise WHERE `MerID` = ?";
+        $query = "SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_pic`, `remain`, `start_date` FROM Merchandise WHERE `MerID` = ?";
         $stmt = $con->prepare($query);
         $stmt->bind_param("i", $input['merid']);
         $stmt->execute();
@@ -55,11 +55,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->close();
     } else {
         if(isset($input['name'])){
-            $query = 'SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_pic`, `remain` FROM `merchandise` WHERE `mer_name` REGEXP '.'"'.$input['name'].'"';
+            $amb = "%".$input['name']."%";
+            $query = 'SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_pic`, `remain`, `start_date` FROM `merchandise` WHERE (`mer_name` LIKE ? AND `start_date` <= NOW()) OR `mer_name` = ?';
+            $stmt = $con->prepare($query);
+            $stmt->bind_param("ss", $amb, $input['name']);
         } else {
-            $query = "SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_pic`, `remain` FROM Merchandise ORDER BY RAND() LIMIT 15";
+            $query = "SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_pic`, `remain` FROM Merchandise WHERE `start_date` <= NOW() ORDER BY RAND() LIMIT 15";
+            $stmt = $con->prepare($query);
         }
-        $stmt = $con->prepare($query);
         $stmt->execute();
         // $stmt->store_result();
         $result = $stmt->get_result();

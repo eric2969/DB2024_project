@@ -46,7 +46,7 @@ function search_prods(){
         alert("請輸入商品名稱!");
         return;
     }
-    var reg_name = ".*" + prod_name + ".*";
+    var reg_name = prod_name;
     $(".row.mx-auto").html("");
     $.ajax({
         url: 'http://localhost/backend/mem/merchandise.php',

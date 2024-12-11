@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/admin_loginsys.js"></script>
-    <script type="text/javascript" src="js/get_product.js"></script>
+    <script type="text/javascript" src="js/add_prod.js"></script>
 </head>
 
 <body>
@@ -30,10 +30,51 @@
         </div>
     </nav>
     <section class="py-5">
-        <h1 id="pid_nfound" class="fw-bold text-center" style="padding-top: 8rem;">Product ID not found!</h1>
-        <!-- product_detail_section -->
-        
-        <div class="container py-5"></div>
+        <div class="container py-5">
+            <div data-reflow-type="product-editor">
+                <div class="reflow-product">
+                  <div class="ref-media">
+                    <div class="ref-preview">
+                      <!-- 圖片顯示 -->
+                      <div class="image-editor ref-image active" style="align-items: center; justify-content: center; display: flex; background-color: lightgray;">
+                        <h2 id="img_nupload" class="fw-bold">請上傳商品照片</h2>
+                        <img id="previewImage" data-reflow-preview-type="image" style="display: none; width: 100%; height: 100%;"/>
+                      </div>
+                      <!-- 圖片選擇器（編輯模式） -->
+                      <input type="file" onchange="updateImage()" id="productImageSelector" class="form-control image-selector" accept="image/*">
+                    </div>
+                  </div>
+                  <div class="ref-product-data">
+                    <!-- 名稱編輯（編輯模式） -->
+                    <input type="text" id="productNameEditor" class="form-control name-editor" placeholder="請輸入商品名稱">
+                    <br/>
+                    <!-- 價格編輯 -->
+                    <input type="number" id="productPriceEditor" class="form-control price-editor" min="0" placeholder="請輸入商品價格">
+                    <br/>
+                    <!-- 販售日期 -->
+                    <strong class="ref-price">Starting Date:
+                        <input type="Date" id="productDateEditor" class="form-control price-editor">
+                    </strong>
+                    <br/>
+                    <!-- 庫存數量編輯（編輯模式） -->
+                    <strong class="ref-price">Remain Quantity:
+                        <div class="ref-quantity-widget" id="productStockEditor" width:700px;>
+                            <div class="ref-decrease" onclick="dec();" ><span></span></div>
+                                <input id="shop_amount" type="number" val=0 min=0/>
+                            <div class="ref-increase" onclick="inc();"><span></span></div>
+                        </div>
+                    </strong>
+
+                    <hr />
+                    <!-- 按鈕切換 -->
+                    <div class="action-buttons">
+                      <button class="btn btn-success shadow" onclick="add_prod();">Add Product</button>
+                      <button class="btn btn-secondary shadow" onclick='window.location.href="products.html";'>Cancel</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
     </section>
     <footer class="bg-primary-gradient">
         <div class="container py-4 py-lg-5">

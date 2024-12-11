@@ -99,3 +99,7 @@ function search_prods(){
         }
     });
 }
+
+function add_prod(){
+    window.location.href = "product_add.html";
+}

@@ -1,4 +1,6 @@
 function loadProducts() {
+    var date = new Date(); // Or the date you'd like converted.
+    var TD = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
     let params = new URLSearchParams(window.location.search);
     if(!params.has('MerID')){
         alert("無效的操作");
@@ -31,17 +33,19 @@ function loadProducts() {
                                 <div class="ref-product-data">
                                     <h1 class="ref-name fw-bold">${product.Mer_name}</h1><br />
                                     <strong class="ref-price ref-on-sale">$${product.Retail_price}</strong><br />
+                                    <strong class="ref-price">Starting Date: <span class="product-date" style='color:${(product.start_date<=TD)?"black":"red"};'>${product.start_date}</span></strong>
                                     <strong class="ref-price">Remain Quantity: <span id="prod_remain">${product.remain}</span></strong><br /><hr />
-                                    <span data-reflow-type="add-to-cart" data-reflow-shoppingcart-url="shopping-cart.html" data-reflow-addtocart-text data-reflow-product="717978921" data-reflow-variant="199976733_s">
+                                    <span data-reflow-type="add-to-cart" data-reflow-shoppingcart-url="shopping-cart.html" data-reflow-addtocart-text style="display: ${(product.start_date<=TD)?"block":"none"};">
                                         <div class="reflow-add-to-cart ref-product-controls" style="bottom:5px;">
                                                 <div class="ref-quantity-widget">
                                                     <div class="ref-decrease" onclick="dec();" ><span></span></div>
-                                                        <input id="shop_amount" type="number" value=1 min=1 max=9/>
+                                                        <input id="shop_amount" type="number" value=1 min=1/>
                                                     <div class="ref-increase" onclick="inc();"><span></span></div>
                                                 </div>
                                             <input id="add_btn" type="submit" class="btn btn-primary shadow ref-button" value="Add to Cart" onclick="addCart(${product.MerID});">
                                         </div>
                                     </span>
+                                    <h3 class="fw-bold" style="display:${(product.start_date<=TD)?"none":"block"}; color:red;">Product Not Available!</h2>
                                 </div>
                             </div>
                         </div>
@@ -77,7 +81,7 @@ function dec() {
 
 function inc() {
     var input = parseInt($('#shop_amount').val());
-    input = Math.min(99, input + 1);
+    input = input + 1;
     $("#shop_amount").val(input);
 }
 
