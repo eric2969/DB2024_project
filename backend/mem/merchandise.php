@@ -56,11 +56,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         if(isset($input['name'])){
             $amb = "%".$input['name']."%";
-            $query = 'SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_pic`, `remain`, `start_date` FROM `merchandise` WHERE (`mer_name` LIKE ? AND `start_date` <= NOW()) OR `mer_name` = ?';
+            $query = 'SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_pic`, `remain`, `start_date` FROM `merchandise` WHERE `mer_name` LIKE ?';
             $stmt = $con->prepare($query);
-            $stmt->bind_param("ss", $amb, $input['name']);
+            $stmt->bind_param("s", $amb);
         } else {
-            $query = "SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_pic`, `remain` FROM Merchandise WHERE `start_date` <= NOW() ORDER BY RAND() LIMIT 15";
+            $query = "SELECT `MerID`, `Mer_name`, `Retail_price`, `Mer_pic`, `remain` FROM Merchandise ORDER BY `MerID` DESC LIMIT 30";
             $stmt = $con->prepare($query);
         }
         $stmt->execute();

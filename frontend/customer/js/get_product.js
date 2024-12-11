@@ -34,7 +34,7 @@ function loadProducts() {
                                     <h1 class="ref-name fw-bold">${product.Mer_name}</h1><br />
                                     <strong class="ref-price ref-on-sale">$${product.Retail_price}</strong><br />
                                     <strong class="ref-price">Starting Date: <span class="product-date" style='color:${(product.start_date<=TD)?"black":"red"};'>${product.start_date}</span></strong>
-                                    <strong class="ref-price">Remain Quantity: <span id="prod_remain">${product.remain}</span></strong><br /><hr />
+                                    <strong class="ref-price" style="display:${(product.start_date<=TD)?"block":"none"};">Remain Quantity: <span id="prod_remain">${product.remain}</span></strong><br /><hr />
                                     <span data-reflow-type="add-to-cart" data-reflow-shoppingcart-url="shopping-cart.html" data-reflow-addtocart-text style="display: ${(product.start_date<=TD)?"block":"none"};">
                                         <div class="reflow-add-to-cart ref-product-controls" style="bottom:5px;">
                                                 <div class="ref-quantity-widget">
@@ -56,7 +56,7 @@ function loadProducts() {
                         if(product.remain <= 0){
                             $("#prod_remain").css("color", "red");
                             $("#add_btn").css("background-color", "gray");
-                        } else if(product.remain <= 5){
+                        } else if(product.remain < 10){
                             $("#prod_remain").css("color", "orange");
                         } else {
                             $("#prod_remain").css("color", "black");

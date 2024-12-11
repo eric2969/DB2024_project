@@ -3,7 +3,7 @@ header('Content-Type: application/json');
 
 session_start();
 
-$member = $_COOKIE['admin'];
+
 
 $file_path = '../credentials.txt';
 
@@ -39,6 +39,12 @@ if (!$con) {
 $con->query("SET NAMES 'utf8'");
 
 $input = json_decode(file_get_contents('php://input'), true);
+
+if(!isset($_SESSION['admin'])){
+    echo json_encode(['success' => false, 'message' => '尚未登入']);
+} else {
+    $member = $_SESSION['admin'];
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['start_time']) && isset($input['end_time'])) {
     $start_time = $input['start_time'];

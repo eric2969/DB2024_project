@@ -118,8 +118,9 @@ function chk_login(){
     return result;
 }
 $(document).ready(function() {
-    var objDate = new Date();
-    $('#sign_date').attr('max', objDate.toISOString().split('T')[0]);
+    var date = new Date(); // Or the date you'd like converted.
+    var DateTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
+    $('#sign_date').attr('max', DateTime);
     $.ajax({
         url: 'http://localhost/backend/mem/check_login.php',
         type: 'POST',

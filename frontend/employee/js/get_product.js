@@ -90,7 +90,7 @@ function loadProducts() {
                         $("#pid_nfound").css("display","none");
                         if(product.remain <= 0)
                             $("#prod_remain").css("color", "red");
-                        else if(product.remain <= 5)
+                        else if(product.remain < 10)
                             $("#prod_remain").css("color", "orange");
                         else 
                             $("#prod_remain").css("color", "black");
