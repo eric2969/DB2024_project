@@ -33,34 +33,24 @@ if (!$con) {
 }
 $con->query("SET NAMES 'utf8'");
 
-$input = json_decode(file_get_contents('php://input'), true);
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($input['password'])) {
-    $username = $input['username'];
-    $password = $input['password'];
-    $remember = isset($input['remember']) ? $input['remember'] : false;
-
-    $query = "SELECT `Mem_pass`, `MemID`, `Mem_name` FROM member WHERE Mem_email = ? ";
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_COOKIE['member_id'])) {
+    $uid = $_COOKIE['member_id'];
+    $query = "SELECT Mem_email, Mem_name, Mem_addr, Mem_phone, Mem_bth FROM member WHERE MemID = ?";
     $stmt = $con->prepare($query);
-    $MemID = "";
-    $stmt->bind_param("s", $username);
+    $stmt->bind_param("s", $uid);
     $stmt->execute();
     $stmt->store_result();
-    $stmt->bind_result($hashed_password, $MemID, $MemName);
+    $stmt->bind_result($email, $name, $addr, $phone, $date);
     $stmt->fetch();
 
-    if ($stmt->num_rows > 0 && password_verify($password, $hashed_password)) {
-        $_SESSION['member'] = $MemName;
-        $_SESSION['member_id'] = $MemID;
-        setcookie('member', $MemName, time() + (600), "/");
-        setcookie('member_id', $MemID, time() + (600), "/");
-        echo json_encode(['success' => true, 'message' => '登入成功']);
+    if ($stmt->num_rows > 0) {
+        echo json_encode(['success' => true, 'message' => '登入成功', 'data' => ['email' => $email, 'name' => $name, 'addr' => $addr, 'phone' => $phone, 'date' => $date]]);
     } else {
         echo json_encode(['success' => false, 'message' => '用戶名或密碼錯誤']);
     }
     $stmt->close();
 } else {
-    echo json_encode(['success' => false, 'message' => '無效的請求']);
+    echo json_encode(['success' => false, 'message' => '尚未登入']);
 }
 
 $con->close();

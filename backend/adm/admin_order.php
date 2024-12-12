@@ -40,19 +40,19 @@ $con->query("SET NAMES 'utf8'");
 
 $input = json_decode(file_get_contents('php://input'), true);
 
-if(!isset($_SESSION['admin'])){
+if(!isset($_SESSION['admin_id'])){
     echo json_encode(['success' => false, 'message' => '尚未登入']);
 } else {
-    $member = $_SESSION['admin'];
+    $uid = $_SESSION['admin_id'];
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['start_time']) && isset($input['end_time'])) {
     $start_time = $input['start_time'];
     $end_time = $input['end_time'];
-    $query = "SELECT `CusID`, `OrdID`, `Way_to_pay`, `create_time`, `income`, `status`, `Address`, `Name`, `Phone` FROM orders JOIN admins a ON EmpID = a.indice WHERE a.username = ? AND create_time BETWEEN DATE_SUB(?, INTERVAL 1 DAY) AND DATE_ADD(?, INTERVAL 1 DAY) ORDER BY create_time DESC";
+    $query = "SELECT `CusID`, `OrdID`, `Way_to_pay`, `create_time`, `income`, `status`, `Address`, `Name`, `Phone` FROM orders WHERE EmpID = ? AND create_time BETWEEN DATE_SUB(?, INTERVAL 1 DAY) AND DATE_ADD(?, INTERVAL 1 DAY) ORDER BY create_time DESC";
     $stmt = $con->prepare($query);
 
-    $stmt->bind_param("sss", $member, $start_time, $end_time);
+    $stmt->bind_param("sss", $uid, $start_time, $end_time);
     $stmt->execute();
 
     $result = $stmt->get_result();

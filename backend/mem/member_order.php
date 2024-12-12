@@ -3,8 +3,6 @@ header('Content-Type: application/json');
 
 session_start();
 
-$member = $_SESSION['member'];
-
 $file_path = '../credentials.txt';
 
 // 確認檔案存在且可讀取
@@ -39,6 +37,14 @@ if (!$con) {
 $con->query("SET NAMES 'utf8'");
 
 $input = json_decode(file_get_contents('php://input'), true);
+
+if(isset($_SESSION['member'])){
+    $member = $_SESSION['member_id'];
+} else { 
+    echo json_encode(['success' => false, 'message' => '尚未登入']);
+    $con->close();
+    die();
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['start_time']) && isset($input['end_time'])) {
 

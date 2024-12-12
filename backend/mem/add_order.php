@@ -35,9 +35,8 @@ $con->query("SET NAMES 'utf8'");
 
 $input = json_decode(file_get_contents('php://input'), true);
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['name']) && isset($input['phone']) && isset($input['addr']) && isset($input['cart']) && isset($input['income'])) {
-    if(isset($_SESSION['member'])){
-        $memid = $_SESSION['member'];
-
+    if(isset($_SESSION['member_id'])){
+        $memid = $_SESSION['member_id'];
         $name = $input['name'];
         $phone = $input['phone'];
         $addr = $input['addr'];

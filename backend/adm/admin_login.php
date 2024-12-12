@@ -39,17 +39,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($
     $username = $input['username'];
     $password = $input['password'];
 
-    $query = "SELECT `password` FROM admins WHERE `username` = ?";
+    $query = "SELECT `password`, `indice` FROM admins WHERE `username` = ?";
     $stmt = $con->prepare($query);
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $stmt->store_result();
-    $stmt->bind_result($hashed_password);
+    $stmt->bind_result($hashed_password, $uid);
     $stmt->fetch();
 
     if ($stmt->num_rows > 0 && password_verify($password, $hashed_password)) {
         $_SESSION['admin'] = $username;
+        $_SESSION['admin_id'] = $uid;
         setcookie('admin', $username, time() + (600), "/"); // 10min
+        setcookie('admin_id', $uid, time() + (600), "/"); // 10min
         echo json_encode(['success' => true, 'message' => '登入成功']);
     } else {
         echo json_encode(['success' => false, 'message' => '用戶名或密碼錯誤']);

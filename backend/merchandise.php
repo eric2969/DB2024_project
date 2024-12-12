@@ -3,7 +3,7 @@ header('Content-Type: application/json');
 
 session_start();
 
-$file_path = '../credentials.txt';
+$file_path = 'credentials.txt';
 
 // 確認檔案存在且可讀取
 if (file_exists($file_path) && is_readable($file_path)) {
@@ -64,9 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt = $con->prepare($query);
         }
         $stmt->execute();
-        // $stmt->store_result();
         $result = $stmt->get_result();
-
         if ($result->num_rows > 0) {
             $goods = [];
             while ($row = $result->fetch_assoc()) {

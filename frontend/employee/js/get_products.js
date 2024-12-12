@@ -3,7 +3,7 @@ var defimg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQQAAAEECAYAAADOCEoK
 $(document).ready(function() {
     // 發送請求獲取商品資料
     $.ajax({
-        url: 'http://localhost/backend/mem/merchandise.php',
+        url: 'http://localhost/backend/merchandise.php',
         type: 'POST',
         dataType: 'json',
         data: JSON.stringify({single: false}),
@@ -60,7 +60,7 @@ function search_prods(){
     var reg_name = ".*" + prod_name + ".*";
     $(".row.mx-auto").html("");
     $.ajax({
-        url: 'http://localhost/backend/mem/merchandise.php',
+        url: 'http://localhost/backend/merchandise.php',
         type: 'POST',
         dataType: 'json',
         data: JSON.stringify({single: false, name: reg_name}),

@@ -34,17 +34,17 @@ if (!$con) {
 
 $con->query("SET NAMES 'utf8'");
 
-if(!isset($_SESSION['admin'])){
+if(!isset($_SESSION['admin_id'])){
     echo json_encode(['success' => false, 'message' => '尚未登入']);
 } else {
-    $member = $_SESSION['admin'];
+    $uid = $_SESSION['admin_id'];
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['admin'])) {
     //get comp
-    $query = "SELECT `compID`, `complainant`, `email`, `reason`, `create_time` FROM `complaint` a LEFT JOIN `admins` b ON a.`EmpID` = b.`indice` WHERE b.`username` = ? OR a.`EmpID` = -1 ORDER BY a.`create_time` DESC";
+    $query = "SELECT `compID`, `complainant`, `email`, `reason`, `create_time` FROM `complaint` WHERE `EmpID` = ? OR `EmpID` = -1 ORDER BY `create_time` DESC";
     $stmt = $con->prepare($query);
-    $stmt->bind_param("s", $member);
+    $stmt->bind_param("s", $uid);
     $stmt->execute();
     $result = $stmt->get_result();
     if ($result->num_rows > 0) {

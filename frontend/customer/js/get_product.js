@@ -9,7 +9,7 @@ function loadProducts() {
     }
     var MerID = params.get('MerID');
     $.ajax({
-        url: 'http://localhost/backend/mem/merchandise.php',
+        url: 'http://localhost/backend/merchandise.php',
         type: 'POST',
         dataType: 'json',
         data:JSON.stringify({single: true, merid: MerID}),
@@ -34,8 +34,8 @@ function loadProducts() {
                                 <div class="ref-product-data">
                                     <h1 class="ref-name fw-bold">${product.Mer_name}</h1><br />
                                     <strong class="ref-price ref-on-sale">$${product.Retail_price}</strong><br />
-                                    <strong class="ref-price ava">Starting Date: <span class="product-date" style='color:${(product.start_date<=TD)?"black":"red"};'>${product.start_date}</span></strong>
-                                    <strong id="rem" class="ref-price ava">Remain Quantity: <span id="prod_remain">${product.remain}</span></strong><br /><hr />
+                                    <strong id="sdt" class="ref-price">Starting Date: <span class="product-date" style='color:${(product.start_date<=TD)?"black":"red"};'>${product.start_date}</span></strong>
+                                    <strong id="rem" class="ref-price">Remain Quantity: <span id="prod_remain">${product.remain}</span></strong><br /><hr />
                                     <span id="add" data-reflow-type="add-to-cart" data-reflow-shoppingcart-url="shopping-cart.html" data-reflow-addtocart-text>
                                         <div class="reflow-add-to-cart ref-product-controls" style="bottom:5px;">
                                                 <div class="ref-quantity-widget">
@@ -54,8 +54,8 @@ function loadProducts() {
                         // 插入商品卡片到容器
                         productContainer.appendChild(productCard);
                         $("#pid_nfound").css("display","none");
-                        $("#rem").css("display", (product.start_date <= TD? "block" : "none"));
-                        $(".ava").css('display', (product.available ? "block":"none"));
+                        $("#rem").css("display", ((product.start_date <= TD && product.available)? "block" : "none"));
+                        $("#sdt").css('display', (product.available ? "block":"none"));
                         if(product.start_date > TD || !product.available || product.remain <= 0){
                             $("#add").css("display", "none");
                             $('#nava').css("display", "block");

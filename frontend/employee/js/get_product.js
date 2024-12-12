@@ -21,7 +21,7 @@ function loadProducts() {
     }
     var MerID = params.get('MerID');
     $.ajax({
-        url: 'http://localhost/backend/mem/merchandise.php',
+        url: 'http://localhost/backend/merchandise.php',
         type: 'POST',
         dataType: 'json',
         data:JSON.stringify({single: true, merid: MerID}),
@@ -95,11 +95,11 @@ function loadProducts() {
                         productContainer.appendChild(productCard);
                         $("#pid_nfound").css("display","none");
                         if(product.remain <= 0)
-                            $("#prod_remain").css("color", "red");
+                            $(".product-remain").css("color", "red");
                         else if(product.remain < 10)
-                            $("#prod_remain").css("color", "orange");
+                            $(".product-remain").css("color", "orange");
                         else 
-                            $("#prod_remain").css("color", "black");
+                            $(".product-remain").css("color", "black");
                         $('.off-btn').on('click', function () {
                             const productId = $(this).data('id');
                             $.ajax({

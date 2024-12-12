@@ -31,10 +31,9 @@ function deleteCookie(name) {
 //member register form
 function member_signup(){
     var username = $('#sign_name').val();
-    var bdate = $('#sign_date').val();
     var mail = $('#sign_email').val();
     var password = $('#sign_password').val();
-    if(username == "" || password == "" || bdate == "" || mail == ""){
+    if(username == "" || password == "" ||  mail == ""){
         alert("Please fill in all fields.");
         return;
     }
@@ -42,7 +41,7 @@ function member_signup(){
         url: 'http://localhost/backend/mem/member_register.php',
         type: 'POST',
         dataType: 'json',
-        data: JSON.stringify({ username: username, password: password, mail: mail, bdate: bdate}),
+        data: JSON.stringify({ username: username, password: password, mail: mail}),
         contentType: 'application/json; charset=utf-8',
         success: function(response) {
             // console.log(response);
@@ -83,7 +82,7 @@ function member_login() {
     });
 }
 
-function member_logout() {
+function member_logout(flag = 0) {
     $.ajax({
         url: 'http://localhost/backend/mem/logout.php',
         type: 'POST',
@@ -91,8 +90,9 @@ function member_logout() {
         data: JSON.stringify({}),
         contentType: 'application/json; charset=utf-8',
         success: function(response) {
-            alert(response.message);
-            window.location.href = 'index.html';
+            if(!flag)
+                alert(response.message);
+            window.location.href = 'login.html';
         },
         error: function(jqXHR){
             console.log(jqXHR.responseText);
@@ -121,21 +121,13 @@ $(document).ready(function() {
     var date = new Date(); // Or the date you'd like converted.
     var DateTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
     $('#sign_date').attr('max', DateTime);
-    $.ajax({
-        url: 'http://localhost/backend/mem/check_login.php',
-        type: 'POST',
-        dataType: 'json',
-        success: function(response) {
-            if (response.logged_in) {
-                $(".login_btn").css('display', 'block');
-                $(".logout_btn").css('display', 'none');
-            } else {
-                $(".login_btn").css('display', 'none');
-                $(".logout_btn").css('display', 'block');
-            }
-        },
-        error: function(jqXHR) {
-            console.log(jqXHR);
-        }
-    });
+    
+    if (chk_login()) {
+        $(".login_btn").css('display', 'block');
+        $(".logout_btn").css('display', 'none');
+        $("#mem_name").text(getCookie('member'));
+    } else {
+        $(".login_btn").css('display', 'none');
+        $(".logout_btn").css('display', 'block');
+    }
 });

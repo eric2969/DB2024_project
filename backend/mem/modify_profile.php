@@ -35,32 +35,37 @@ $con->query("SET NAMES 'utf8'");
 
 $input = json_decode(file_get_contents('php://input'), true);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($input['password'])) {
-    $username = $input['username'];
-    $password = $input['password'];
-    $remember = isset($input['remember']) ? $input['remember'] : false;
-
-    $query = "SELECT `Mem_pass`, `MemID`, `Mem_name` FROM member WHERE Mem_email = ? ";
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_COOKIE['member_id']) && isset($input['name']) && isset($input['addr']) && isset($input['phone']) && isset($input['date']) && isset($input['passwd'])) {
+    $uid = $_COOKIE['member_id'];
+    //name
+    $query = "UPDATE `member` SET `Mem_name`=?,`Mem_bth`=?,`Mem_phone`=?,`Mem_addr`=? WHERE MemID = ?";
     $stmt = $con->prepare($query);
-    $MemID = "";
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $stmt->store_result();
-    $stmt->bind_result($hashed_password, $MemID, $MemName);
-    $stmt->fetch();
-
-    if ($stmt->num_rows > 0 && password_verify($password, $hashed_password)) {
-        $_SESSION['member'] = $MemName;
-        $_SESSION['member_id'] = $MemID;
-        setcookie('member', $MemName, time() + (600), "/");
-        setcookie('member_id', $MemID, time() + (600), "/");
-        echo json_encode(['success' => true, 'message' => '登入成功']);
-    } else {
-        echo json_encode(['success' => false, 'message' => '用戶名或密碼錯誤']);
+    $stmt->bind_param("sssss", $input['name'], $input['date'], $input['phone'], $input['addr'], $uid);
+    if (!$stmt->execute()) {
+        echo json_encode(['success' => false, 'message' => '找不到該會員']);
+        $stmt->close();
+        $con->close();
+        die();
     }
+    //passwd
+    if($input['passwd'] != '') {
+        $password = password_hash($input['passwd'], PASSWORD_BCRYPT);
+        $query = "UPDATE `member` SET `Mem_pass`=? WHERE MemID = ?";
+        $stmt = $con->prepare($query);
+        $stmt->bind_param("ss", $password, $uid);
+        if ($stmt->execute()) {
+            echo json_encode(['success' => true, 'logout' => 1, 'message' => '修改成功']);
+        } else {
+            echo json_encode(['success' => false, 'message' => '系統錯誤']);
+        }
+        $stmt->close();
+        $con->close();
+        die();
+    }
+    echo json_encode(['success' => true, 'logout' => 0, 'message' => '修改成功']);
     $stmt->close();
 } else {
-    echo json_encode(['success' => false, 'message' => '無效的請求']);
+    echo json_encode(['success' => false, 'message' => '尚未登入']);
 }
 
 $con->close();

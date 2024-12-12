@@ -4,15 +4,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Product - Misca Moosca</title>
+    <title>Shopping Cart - Misca Moosca</title>
     <meta name="description" content="Good Mart of Good Heart">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.reflowhq.com/v2/toolkit.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/member_loginsys.js"></script>
-    <script type="text/javascript" src="js/get_product.js"></script>
-    <script type="text/javascript" src="js/add_cart.js"></script>
+    <script type="text/javascript" src="js/get_profile.js"></script> 
 </head>
 
 <body>
@@ -32,15 +31,37 @@
                 <a class="btn btn-primary shadow login_btn" role="button" style="padding: 9.6px 9.6px;width: 100px;margin: 0.3rem; display:none;" onclick="member_logout();">Log Out</a>
                 <a class="btn btn-primary shadow login_btn" role="button" href="order_detail.html" style="padding: 9.6px 9.6px;width: 100px;margin: 0.3rem; display:none;">Order</a>
                 <a class="btn btn-primary shadow login_btn" role="button" href="mem_detail.html" style="padding: 9.6px 9.6px;width: 100px;margin: 0.3rem; display:none;">Profile</a>
-                <a class="btn btn-primary shadow logout_btn" role="button" href="login.html" style="padding: 9.6px 9.6px;width: 100px;margin: 10px;">Sign in</a>
-                <a class="btn btn-primary logout_btn" role="button" style="width: 100px;padding: 9.6px 9.6px;margin: 10px;" data-bs-target="index.html" href="signup.html">Sign Up</a>
             </div>
         </div>
     </nav>
     <section class="py-5">
-        <h1 id="pid_nfound" class="fw-bold text-center" style="padding-top: 8rem;">Product ID not found!</h1>
-        <!-- product_detail_section -->
-        <div class="container py-5"></div>
+        <div class="container py-5">
+            <div class="row mb-4 mb-lg-5">
+                <div class="col-md-8 col-xl-6 text-center mx-auto">
+                    <h2 class="fw-bold mb-2">Member Profile</h2>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-6 col-xl-4">
+                    <div class="card">
+                        <div class="card-body text-center d-flex flex-column align-items-center">
+                            <div class="bs-icon-xl bs-icon-circle bs-icon-primary shadow bs-icon my-4"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-person">
+                                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z"></path>
+                                </svg></div>
+                            <div data-bs-theme="light">
+                                <div class="mb-3"><div id="mem_email" class="form-control mb-3 fw-bold">$UserEmail</div></div>
+                                <div class="mb-3"><input type="text" id="mem_name" class="form-control mb-3" name="Name" placeholder="Name"></div>
+                                <div class="mb-3"><input type="text" id="mem_addr" class="form-control mb-3" name="Address" placeholder="Address"></div>
+                                <div class="mb-3"><input type="text" id="mem_phone" class="form-control mb-3" name="Phone" placeholder="Phone"></div>
+                                <div class="mb-3"><input type="date" id="mem_date" class="form-control mb-3" name="Birthday"></div>
+                                <div class="mb-3"><input type="password" id="mem_password" class="form-control mb-3" name="password" placeholder="Password"></div>
+                                <div class="mb-3"><input class="btn shadow btn-primary w-100" type="submit" value="確認修改" onclick="mem_modify();"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
     <footer class="bg-primary-gradient">
         <div class="container py-4 py-lg-5">

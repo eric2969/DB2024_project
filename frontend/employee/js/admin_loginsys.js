@@ -84,7 +84,7 @@ function admin_login() {
     });
 }
 
-function admin_logout() {
+function admin_logout(flag = 0) {
     $.ajax({
         url: 'http://localhost/backend/adm/logout.php',
         type: 'POST',
@@ -92,7 +92,8 @@ function admin_logout() {
         data: JSON.stringify({}),
         contentType: 'application/json; charset=utf-8',
         success: function(response) {
-            alert(response.message);
+            if(!flag)
+                alert(response.message);
             window.location.href = 'login.html';
         },
         error: function(jqXHR){

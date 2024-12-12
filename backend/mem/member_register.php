@@ -34,7 +34,7 @@ $con->query("SET NAMES 'utf8'");
 
 $input = json_decode(file_get_contents('php://input'), true);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($input['mail']) && isset($input['bdate']) && isset($input['password'] )) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($input['mail']) && isset($input['password'] )) {
     $query = "SELECT `Mem_pass` FROM member WHERE `Mem_email` = ?";
     $stmt = $con->prepare($query);
     $stmt->bind_param("s", $input['mail']);
@@ -46,9 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($input['username']) && isset($
     }
     $password = password_hash($input['password'], PASSWORD_BCRYPT);
 
-    $query = "INSERT INTO member (`Mem_email`, `Mem_name`, `Mem_bth`, `Mem_pass`) VALUES (?, ?, ?, ?)";
+    $query = "INSERT INTO member (`Mem_email`, `Mem_name`, `Mem_pass`) VALUES (?, ?, ?)";
     $stmt = $con->prepare($query);
-    $stmt->bind_param("ssss", $input['mail'], $input['username'], $input['bdate'], $password);
+    $stmt->bind_param("sss", $input['mail'], $input['username'], $password);
 
     if ($stmt->execute()) {
         echo json_encode(['success' => true, 'message' => '註冊成功']);

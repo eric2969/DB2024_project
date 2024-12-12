@@ -80,7 +80,7 @@ function LoadCart() {
             if(!shop_cart[k])
                 return;
             $.ajax({
-                url: 'http://localhost/backend/mem/merchandise.php',
+                url: 'http://localhost/backend/merchandise.php',
                 type: 'POST',
                 dataType: 'json',
                 data:JSON.stringify({single: true, merid: k}),

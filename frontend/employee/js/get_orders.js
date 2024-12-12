@@ -65,8 +65,8 @@ function loadOrders() {
                             <td>${order.create_time}</td>
                             <td>${status[order.status]}</td>
                             <td><button id="more_${order.OrdID}_btn" class="btn btn-primary shadow ref-button" type="button" style="background: transparent;color: rgb(0,0,0);height: 40px;width: 100px;border-color: var(--bs-btn-bg);">...</button></td>
-                            <td><button class="btn btn-primary shadow send_goods" data-emp=${order.CusID} data-id="${order.OrdID}" data-bs-toggle="modal" data-bs-target="#confirmShipmentModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: var(--bs-btn-bg);">出貨</button></td>
-                            <td><button class="btn btn-primary shadow delete-booking" data-id="${order.OrdID}" data-bs-toggle="modal" data-bs-target="#deleteOrderModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: rgb(255,0,0);">刪除</button></td>
+                            <td><button class="btn btn-primary shadow send_goods" data-emp=${order.CusID} data-id="${order.OrdID}" data-bs-toggle="modal" data-bs-target="#confirmShipmentModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: var(--bs-btn-bg); display:${order.status!=0?'none':'inline-block'};">出貨</button></td>
+                            <td><button class="btn btn-primary shadow delete-booking" data-id="${order.OrdID}" data-bs-toggle="modal" data-bs-target="#deleteOrderModal" type="button" style="width: 100px;height: 40px;color: rgb(0,0,0);background: transparent;border-color: rgb(255,0,0); display:${order.status!=0?'none':'inline-block'};">刪除</button></td>
                         </tr>
                         <tr id="more_${order.OrdID}_div" style="display: none;">
                             <td class="card-header py-3" align="center" rowspan=1>
