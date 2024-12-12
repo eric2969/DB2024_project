@@ -24,4 +24,4 @@
 ## Enter the System
 - [User Website](http://localhost/frontend/customer)
 - [Admin Website](http://localhost/frontend/employee)
-- [Admin Signup Websit](http://localhost/frontend/employee/signup.html)
+- [Admin Signup Website](http://localhost/frontend/employee/signup.html)
