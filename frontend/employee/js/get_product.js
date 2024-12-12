@@ -73,13 +73,18 @@ function loadProducts() {
                                   <div class="ref-increase" onclick="inc();"><span></span></div>
                               </div>
                               </strong>
-
+                                <br />
+                                <strong class="ref-price">Product Status: <span style="color:${product.available?"#05a35e":"red"};">${product.available?"上架中":"已下架"}</span>
                               <hr />
                               <!-- 按鈕切換 -->
-                              <button class="btn btn-primary shadow edit-btn" data-id="${product.MerID}">Edit</button>
+                              <div class="action-buttons product-btn" data-id="${product.MerID}">
+                                <button class="btn btn-primary shadow edit-btn" data-id="${product.MerID}">Edit</button>
+                                <button class="btn btn-danger shadow off-btn" data-id="${product.MerID}" style="display:${(product.available)?"inline-block":"none"}; margin-left:0.8rem;">Pull Off</button>
+                                <button class="btn btn-success shadow on-btn" data-id="${product.MerID}" style="display:${(product.available)?"none":"inline-block"}; margin-left:0.8rem;">Pull On</button>
+                              </div>
                               <div class="action-buttons d-none" data-id="${product.MerID}">
                                 <button class="btn btn-success shadow save-btn" data-id="${product.MerID}">Save</button>
-                                <button class="btn btn-secondary shadow cancel-btn" data-id="${product.MerID}">Cancel</button>
+                                <button class="btn btn-danger shadow cancel-btn" data-id="${product.MerID}" style="margin-left:0.8rem;">Cancel</button>
                               </div>
                             </div>
                           </div>
@@ -94,6 +99,40 @@ function loadProducts() {
                             $("#prod_remain").css("color", "orange");
                         else 
                             $("#prod_remain").css("color", "black");
+                        $('.off-btn').on('click', function () {
+                            const productId = $(this).data('id');
+                            $.ajax({
+                                url: 'http://localhost/backend/adm/pull_prod.php',
+                                type: 'POST',
+                                dataType: 'json',
+                                data: JSON.stringify({action: 0, merid: productId}),
+                                success: function(response) {
+                                    if (response.success) {
+                                        alert("已下架");
+                                        window.location.reload();
+                                    } else {
+                                        alert(response.message);
+                                    }
+                                },
+                            });
+                        });
+                        $('.on-btn').on('click', function () {
+                            const productId = $(this).data('id');
+                            $.ajax({
+                                url: 'http://localhost/backend/adm/pull_prod.php',
+                                type: 'POST',
+                                dataType: 'json',
+                                data: JSON.stringify({action: 1, merid: productId}),
+                                success: function(response) {
+                                    if (response.success) {
+                                        alert("已上架");
+                                        window.location.reload();
+                                    } else {
+                                        alert(response.message);
+                                    }
+                                },
+                            });
+                        });
                         $('.edit-btn').on('click', function () {
                             const productId = $(this).data('id');
 
@@ -108,7 +147,7 @@ function loadProducts() {
 
                             // 隱藏顯示模式的元件
                             $(this).addClass('d-none'); // 隱藏 Edit 按鈕
-                            $(`.product-image, .product-price, .product-name, .product-remain, .product-date`).addClass('d-none');
+                            $(`.product-image, .product-price, .product-name, .product-remain, .product-date, .product-btn`).addClass('d-none');
                           });
 
                           // 點擊 Cancel 按鈕取消編輯
@@ -126,7 +165,7 @@ function loadProducts() {
 
                             // 顯示顯示模式的元件
                             $(`.edit-btn[data-id="${productId}"]`).removeClass('d-none');
-                            $(`.product-image, .product-name, .product-remain, .product-price, product-date`).removeClass('d-none');
+                            $(`.product-image, .product-name, .product-remain, .product-price, product-date, .product-btn`).removeClass('d-none');
                           });
 
                           // 點擊 Save 按鈕保存修改

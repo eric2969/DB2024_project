@@ -33,9 +33,9 @@ function loadProducts() {
                                 <div class="ref-product-data">
                                     <h1 class="ref-name fw-bold">${product.Mer_name}</h1><br />
                                     <strong class="ref-price ref-on-sale">$${product.Retail_price}</strong><br />
-                                    <strong class="ref-price">Starting Date: <span class="product-date" style='color:${(product.start_date<=TD)?"black":"red"};'>${product.start_date}</span></strong>
-                                    <strong class="ref-price" style="display:${(product.start_date<=TD)?"block":"none"};">Remain Quantity: <span id="prod_remain">${product.remain}</span></strong><br /><hr />
-                                    <span data-reflow-type="add-to-cart" data-reflow-shoppingcart-url="shopping-cart.html" data-reflow-addtocart-text style="display: ${(product.start_date<=TD)?"block":"none"};">
+                                    <strong class="ref-price ava">Starting Date: <span class="product-date" style='color:${(product.start_date<=TD)?"black":"red"};'>${product.start_date}</span></strong>
+                                    <strong id="rem" class="ref-price ava">Remain Quantity: <span id="prod_remain">${product.remain}</span></strong><br /><hr />
+                                    <span id="add" data-reflow-type="add-to-cart" data-reflow-shoppingcart-url="shopping-cart.html" data-reflow-addtocart-text>
                                         <div class="reflow-add-to-cart ref-product-controls" style="bottom:5px;">
                                                 <div class="ref-quantity-widget">
                                                     <div class="ref-decrease" onclick="dec();" ><span></span></div>
@@ -45,7 +45,7 @@ function loadProducts() {
                                             <input id="add_btn" type="submit" class="btn btn-primary shadow ref-button" value="Add to Cart" onclick="addCart(${product.MerID});">
                                         </div>
                                     </span>
-                                    <h3 class="fw-bold" style="display:${(product.start_date<=TD)?"none":"block"}; color:red;">Product Not Available!</h2>
+                                    <h3 id="nava" class="fw-bold" style="color:red;">Product Not Available!</h3>
                                 </div>
                             </div>
                         </div>
@@ -53,14 +53,21 @@ function loadProducts() {
                         // 插入商品卡片到容器
                         productContainer.appendChild(productCard);
                         $("#pid_nfound").css("display","none");
-                        if(product.remain <= 0){
-                            $("#prod_remain").css("color", "red");
-                            $("#add_btn").css("background-color", "gray");
-                        } else if(product.remain < 10){
-                            $("#prod_remain").css("color", "orange");
+                        $("#rem").css("display", (product.start_date <= TD? "block" : "none"));
+                        $(".ava").css('display', (product.available ? "block":"none"));
+                        if(product.start_date > TD || !product.available || product.remain <= 0){
+                            $("#add").css("display", "none");
+                            $('#nava').css("display", "block");
                         } else {
-                            $("#prod_remain").css("color", "black");
+                            $("#add").css("display", "block");
+                            $('#nava').css("display", "none");
                         }
+                        if(product.remain <= 0)
+                            $("#prod_remain").css("color", "red");
+                        else if(product.remain < 10)
+                            $("#prod_remain").css("color", "orange");
+                        else 
+                            $("#prod_remain").css("color", "black");
                     });
                 } else 
                     console.error("Unexpected response format:", response.message);

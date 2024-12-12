@@ -17,7 +17,7 @@ function add_prod(){
     const ProdStock = $('#shop_amount').val();
     const ProdPrice = $('#productPriceEditor').val();
     const ProdDate = $('#productDateEditor').val();
-    if (ProdName === '' || ProdStock === '' || ProdPrice === '' || ProdImage === '' || ProdDate === '') {
+    if (ProdName === '' || ProdStock === '' || ProdPrice === '' || ProdImage == null || ProdDate === '') {
         alert('請填寫完整資訊！');
         return;
     }
