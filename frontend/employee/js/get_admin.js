@@ -10,6 +10,7 @@ $(document).ready(function() {
                 $('#admin_phone').val(response.data['phone']);
                 $('#admin_date').val(response.data['date']);
                 $('#admin_dept').text(response.data['dept']);
+                $('#admin_password').val('');
             } else {
                 alert("Server error: " + response.message);
             }

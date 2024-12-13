@@ -10,6 +10,7 @@ $(document).ready(function() {
                 $('#mem_addr').val(response.data['addr']);
                 $('#mem_phone').val(response.data['phone']);
                 $('#mem_date').val(response.data['date']);
+                $('#mem_pasword').val('');
             } else {
                 alert("Server error: " + response.message);
             }
