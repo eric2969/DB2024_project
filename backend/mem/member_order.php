@@ -38,8 +38,8 @@ $con->query("SET NAMES 'utf8'");
 
 $input = json_decode(file_get_contents('php://input'), true);
 
-if(isset($_SESSION['member'])){
-    $member = $_SESSION['member_id'];
+if(isset($_COOKIE['member_id'])){
+    $member = $_COOKIE['member_id'];
 } else { 
     echo json_encode(['success' => false, 'message' => '尚未登入']);
     $con->close();
