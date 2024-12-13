@@ -41,6 +41,29 @@ function rev(merid){
     location.reload();
 }
 
+
+function loadMemberProfile(){
+    $.ajax({
+        url: 'http://localhost/backend/mem/get_profile.php',
+        type: 'POST',
+        dataType: 'json',
+        success: function(response) {
+            if (response.success) {
+                $("#chk_name").val(response.data['name']);
+                $("#chk_addr").val(response.data['addr']);
+                $("#chk_phone").val(response.data['phone']);
+            } else {
+                alert("請先登入");
+                window.location.href = "login.html";
+                return;
+            }
+        },
+        error: function(jqXHR) {
+            alert("系統錯誤，代碼"+jqXHR.status+"\n");
+            console.log(jqXHR);
+        }
+    });
+}
 function checkout(){
     if($("#checkout-agreement").is(":checked")){
         if(chk_login()){
@@ -50,26 +73,7 @@ function checkout(){
             $("#chk_subtotal").text("$ " + subtotal);
             $("#chk_shipping").text("$ " + 70);
             $("#chk_total").text("$ " + (subtotal + 70));
-            $.ajax({
-                url: 'http://localhost/backend/mem/get_profile.php',
-                type: 'POST',
-                dataType: 'json',
-                success: function(response) {
-                    if (response.success) {
-                        $("#chk_name").val(response.data['name']);
-                        $("#chk_addr").val(response.data['addr']);
-                        $("#chk_phone").val(response.data['phone']);
-                    } else {
-                        alert("請先登入");
-                        window.location.href = "login.html";
-                        return;
-                    }
-                },
-                error: function(jqXHR) {
-                    alert("系統錯誤，代碼"+jqXHR.status+"\n");
-                    console.log(jqXHR);
-                }
-            });
+            loadMemberProfile();
         } else {
             alert("請先登入");
             window.location.href = "login.html";
